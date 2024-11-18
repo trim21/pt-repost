@@ -1,0 +1,11 @@
+version: 3
+
+tasks:
+  build:
+    cmds:
+      - nuitka --standalone main.py
+
+  sync: poetry install --sync
+  lock:
+    - poetry lock
+    - poetry install --sync

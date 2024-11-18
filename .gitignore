@@ -1,0 +1,7 @@
+.venv/
+.vscode/
+.idea/
+data.db
+tmp/
+*.py[cd]
+config.toml
