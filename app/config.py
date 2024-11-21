@@ -29,10 +29,8 @@ class Website:
 class Config:
     website: Website
     http_proxy: str | None = None
-    db_path: Path = Path(
-        os.environ.get("SQLITE_DB_FILE") or Path(os.getcwd(), "data.db")
-    )
-    qb_url: Annotated[str, Field(alias="qb-url")] = os.environ.get("QB_URL", "")
+    db_path: Path = Path(Path(os.getcwd(), "data.db"))
+    qb_url: Annotated[str, Field(alias="qb-url")]
 
 
 def load_config():

@@ -10,6 +10,11 @@ from app.db import Database
 @click.argument("info_hash")
 @click.argument("douban")
 def main(info_hash: str, douban: str):
+    """
+    run with
+
+        $ pt-repost info_hash douban_id
+    """
     cfg = load_config()
 
     app = Application(
