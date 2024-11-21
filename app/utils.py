@@ -6,7 +6,7 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 from shutil import which
-from typing import TypeVar, Any
+from typing import Any, TypeVar
 
 from pydantic import TypeAdapter
 from sslog import logger

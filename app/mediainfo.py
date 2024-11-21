@@ -7,11 +7,10 @@ from pathlib import Path
 from shutil import which
 from typing import List, Optional
 
-import rich
-from pydantic import Field, TypeAdapter
+from pydantic import Field
 from sslog import logger
 
-from app.utils import run_command, parse_obj_as
+from app.utils import parse_obj_as, run_command
 
 
 @dataclasses.dataclass(
@@ -20,7 +19,6 @@ from app.utils import run_command, parse_obj_as
     kw_only=True,
 )
 class Track:
-    # type: str = Field(alias="@type")
     # unique_id: str = Field(alias="UniqueID")
     hdr_format: str = Field("", alias="HDR_Format")
     hdr_format_string: str = Field("", alias="HDR_Format_String")
