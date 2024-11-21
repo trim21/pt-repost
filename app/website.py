@@ -7,7 +7,7 @@ import bencode2
 import guessit
 import httpx
 
-from app.config import config
+from app.config import Config
 from app.mediainfo import MediaInfo
 from app.meta_info import Info, Region
 
@@ -25,6 +25,9 @@ class Website(abc.ABC):
 
 
 class SSD(Website):
+    def __init__(self, cfg: Config):
+        self.cfg = cfg
+
     def parse_mediainfo_as_options(self, filename: str, m: MediaInfo) -> dict[str, Any]:
         options: dict[str, Any] = {}
 
@@ -171,7 +174,7 @@ class SSD(Website):
                 raise NotImplementedError(f"not supported region {info.region.name}")
 
         cookie = SimpleCookie()
-        cookie.load(config.website.ssd.cookies)
+        cookie.load(self.cfg.website.ssd.cookies)
 
         res = httpx.post(
             "https://springsunday.net/takeupload.php",

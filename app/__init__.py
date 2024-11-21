@@ -8,22 +8,13 @@ import qbittorrentapi
 from qbittorrentapi import TorrentState
 from sslog import logger
 
-from app.config import QB_URL, get_source_text, video_ext
-from app.db import execute, fetch_all, fetch_one
+from app.config import get_source_text, video_ext, load_config
+from app.db import Database
 from app.image_host import upload
 from app.mediainfo import extract_mediainfo_from_file, parse_mediainfo_json
 from app.meta_info import extract_meta_info
 from app.utils import generate_images, parse_obj_as
 from app.website import SSD
-
-qb = qbittorrentapi.Client(
-    host=QB_URL,
-    SIMPLE_RESPONSES=True,
-    FORCE_SCHEME_FROM_HOST=True,
-    VERBOSE_RESPONSE_LOGGING=False,
-    RAISE_NOTIMPLEMENTEDERROR_FOR_UNIMPLEMENTED_API_ENDPOINTS=True,
-    REQUESTS_ARGS={"timeout": 10},
-)
 
 
 class Status(enum.IntEnum):
@@ -34,11 +25,12 @@ class Status(enum.IntEnum):
 
 def add_task(
     info_hash,
+    db: Database,
     site: str = "ssd",
     douban_id: str = "",
     imdb_id: str = "",
 ):
-    execute(
+    db.execute(
         """
         insert into task (info_hash, site, status, douban_id, imdb_id)
         values (?, ?, ?, ?, ?)
@@ -87,6 +79,8 @@ def process_task(
     t: QbTorrent,
     douban_id: str,
     imdb_id: str,
+    qb: qbittorrentapi.Client,
+    db: Database,
 ):
     files = [parse_obj_as(QbFile, x) for x in qb.torrents_files(info_hash)]
     files = [f for f in files if f.name.lower().endswith(tuple(video_ext))]
@@ -101,7 +95,7 @@ def process_task(
         logger.error("can't find local file {}".format(video_file))
         return
 
-    mediainfo_row = fetch_one(
+    mediainfo_row = db.fetch_one(
         "select mediainfo, mediainfo_json from mediainfo where task_id = ?", [task_id]
     )
     if mediainfo_row:
@@ -110,7 +104,7 @@ def process_task(
     else:
         logger.info("generating media info")
         mediainfo_text, mediainfo_json = extract_mediainfo_from_file(video_file)
-        execute(
+        db.execute(
             """
              insert or ignore into mediainfo (task_id, mediainfo, mediainfo_json)
              values (?, ?, ?)
@@ -120,7 +114,7 @@ def process_task(
 
     count = 3
 
-    images = fetch_all("select * from image where task_id = ?", [task_id])
+    images = db.fetch_all("select * from image where task_id = ?", [task_id])
 
     if len(images) < count:
         with tempfile.TemporaryDirectory(
@@ -129,10 +123,12 @@ def process_task(
         ) as tempdir:
             for file in generate_images(video_file, count=count, tmpdir=Path(tempdir)):
                 url = upload(file, site)
-                execute("insert into image (task_id, url) values (?,?)", [task_id, url])
+                db.execute(
+                    "insert into image (task_id, url) values (?,?)", [task_id, url]
+                )
 
     images = [
-        x[0] for x in fetch_all("select url from image where task_id = ?", [task_id])
+        x[0] for x in db.fetch_all("select url from image where task_id = ?", [task_id])
     ]
 
     site_implement = SSD()
@@ -158,11 +154,11 @@ def process_task(
         url=url,
         info=info,
     )
-    execute("update task set status = ? where task_id = ?", [Status.done, task_id])
+    db.execute("update task set status = ? where task_id = ?", [Status.done, task_id])
 
 
-def process_tasks(info_hash: str):
-    tasks: list[tuple[int, str, str, int, str, str]] = fetch_all(
+def process_tasks(info_hash: str, qb: qbittorrentapi.Client, db: Database):
+    tasks: list[tuple[int, str, str, int, str, str]] = db.fetch_all(
         "select task_id,info_hash,site,status,douban_id,imdb_id from task where status != ? and info_hash = ?",
         [Status.done, info_hash],
     )
@@ -187,16 +183,29 @@ def process_tasks(info_hash: str):
             logger.trace("{} is partial downloaded", info_hash)
             continue
 
-        process_task(task_id, info_hash, site, torrent, douban_id, imdb_id)
+        process_task(task_id, info_hash, site, torrent, douban_id, imdb_id, qb)
 
 
 @click.command()
 @click.argument("info_hash")
 @click.argument("douban")
 def main(info_hash: str, douban: str):
-    execute(get_source_text("sql/task.sql"))
-    execute(get_source_text("sql/image.sql"))
-    execute(get_source_text("sql/mediainfo.sql"))
+    config = load_config()
+    db = Database(config.db_path)
+
+    db.execute(get_source_text("sql/task.sql"))
+    db.execute(get_source_text("sql/image.sql"))
+    db.execute(get_source_text("sql/mediainfo.sql"))
 
     add_task(info_hash.lower(), douban_id=douban)
-    process_tasks(info_hash.lower())
+
+    qb = qbittorrentapi.Client(
+        host=config.qb_url,
+        SIMPLE_RESPONSES=True,
+        FORCE_SCHEME_FROM_HOST=True,
+        VERBOSE_RESPONSE_LOGGING=False,
+        RAISE_NOTIMPLEMENTEDERROR_FOR_UNIMPLEMENTED_API_ENDPOINTS=True,
+        REQUESTS_ARGS={"timeout": 10},
+    )
+
+    process_tasks(info_hash.lower(), qb)

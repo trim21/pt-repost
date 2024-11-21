@@ -32,19 +32,18 @@ class Config:
     db_path: Path = Path(
         os.environ.get("SQLITE_DB_FILE") or Path(os.getcwd(), "data.db")
     )
-    qb_url: Annotated[str, Field(alias="qb-url")]
+    qb_url: Annotated[str, Field(alias="qb-url")] = os.environ.get("QB_URL", "")
 
 
-config_file = Path(os.getcwd(), "config.toml")
+def load_config():
+    config_file = Path(os.getcwd(), "config.toml")
 
-if not config_file.exists():
-    print("please put a config.toml at {}".format(config_file))
-    sys.exit(1)
+    if not config_file.exists():
+        print("please put a config.toml at {}".format(config_file))
+        sys.exit(1)
 
-config: Config = TypeAdapter(Config).validate_python(
-    tomli.loads(config_file.read_text())
-)
+    config: Config = TypeAdapter(Config).validate_python(
+        tomli.loads(config_file.read_text())
+    )
 
-
-SQLITE_DB_FILE = config.db_path
-QB_URL = os.environ.get("QB_URL") or config.qb_url
+    return config
