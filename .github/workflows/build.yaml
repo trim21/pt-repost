@@ -28,7 +28,9 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      - run: PYTHONPATH=. pyinstaller --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=app main.py main.py
+      - run: pyinstaller --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=app main.py main.py
+        env:
+           PYTHONPATH: '.'
 
       - run: ls dist
 
