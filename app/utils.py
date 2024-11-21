@@ -105,7 +105,7 @@ def generate_images(
             logger.info(
                 "screenshot from {} at {}", video_file.name, timedelta(seconds=seek)
             )
-            file = temp.joinpath(f"{i}.{j}.png")
+            file = temp.joinpath(f"{i}.{j}.{image_format}")
             run_command(
                 [
                     ffmpeg,
