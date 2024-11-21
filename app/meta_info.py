@@ -13,6 +13,12 @@ class Region(enum.IntEnum):
     UK = 4
 
 
+class MediaType(enum.IntEnum):
+    Unknown = 0
+    Episodes = 1
+    Movie = 2
+
+
 @dataclasses.dataclass(frozen=True, slots=True)
 class Info:
     region: Region

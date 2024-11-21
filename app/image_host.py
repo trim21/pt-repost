@@ -2,6 +2,7 @@ import uuid
 from pathlib import Path
 
 import httpx
+import yarl
 from sslog import logger
 
 from app.config import config
@@ -25,7 +26,7 @@ def upload(file: Path, site: str) -> str:
 def upload_picgo(file: Path) -> str:
     r = picgo_client.post(
         "https://www.picgo.net/api/1/upload",
-        files={"source": (str(uuid.uuid4()) + file.suffix, file.open("rb"))},
+        files={"source": (str(uuid.uuid4()) + file.suffix, file.read_bytes())},
         data={"format": "json"},
         timeout=100,
     )
@@ -43,7 +44,7 @@ def upload_pixhost(file: Path) -> str:
     r = http_client.post(
         "https://api.pixhost.to/images",
         headers={"accept": "application/json"},
-        files={"img": (str(uuid.uuid4()) + file.suffix, file.open("rb"))},
+        files={"img": (str(uuid.uuid4()) + file.suffix, file.read_bytes())},
         data={
             "content_type": "1",
             "max_th_size": "500",
@@ -56,6 +57,10 @@ def upload_pixhost(file: Path) -> str:
 
     data = r.json()
 
-    print(data)
+    u = yarl.URL(data["show_url"])
 
-    return data["show_url"]
+    return str(
+        u.with_host("img100.pixhost.to").with_path(
+            "/images/" + u.path.removeprefix("/show/")
+        )
+    )

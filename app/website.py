@@ -6,7 +6,6 @@ from typing import Any
 import bencode2
 import guessit
 import httpx
-import rich
 
 from app.config import config
 from app.mediainfo import MediaInfo
@@ -27,12 +26,18 @@ class Website(abc.ABC):
 
 class SSD(Website):
     def parse_mediainfo_as_options(self, filename: str, m: MediaInfo) -> dict[str, Any]:
-        options: dict[str, Any] = {
-            "type": 502,
-        }
+        options: dict[str, Any] = {}
 
-        guess = guessit.guessit(filename)
-        print(guess)
+        guess: dict[str, str] = guessit.guessit(filename)
+
+        match guess.get("type"):
+            case "movie":
+                options["type"] = "501"
+            case "episode":
+                options["type"] = "502"
+            case _:
+                options["type"] = "509"
+
         if "source" in guess:
             medium_options = {
                 "Blu-ray": 1,
@@ -160,12 +165,10 @@ class SSD(Website):
                 data["source_sel"] = 2
             case Region.TW:
                 data["source_sel"] = 3
-            case Region.USA, Region.UK:
+            case Region.USA | Region.UK:
                 data["source_sel"] = 4
             case _:
-                raise NotImplementedError(f"not supported region {info.region}")
-
-        rich.print(data)
+                raise NotImplementedError(f"not supported region {info.region.name}")
 
         cookie = SimpleCookie()
         cookie.load(config.website.ssd.cookies)

@@ -1,6 +1,8 @@
 .venv/
 .vscode/
 .idea/
+build/
+dist/
 data.db
 tmp/
 *.py[cd]

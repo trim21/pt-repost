@@ -1,3 +1,4 @@
+import functools
 import json
 import shlex
 import subprocess
@@ -5,7 +6,9 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 from shutil import which
+from typing import TypeVar, Any
 
+from pydantic import TypeAdapter
 from sslog import logger
 
 
@@ -158,3 +161,19 @@ def human_readable_size(size, decimal_places=2):
             break
         size /= 1024.0
     return f"{size:.{decimal_places}f} {unit}"
+
+
+_T = TypeVar("_T")
+
+
+@functools.cache
+def get_type_adapter(t: type[_T]) -> TypeAdapter[_T]:
+    return TypeAdapter(t)
+
+
+_K = TypeVar("_K")
+
+
+def parse_obj_as(typ: type[_K], value: Any, *, strict: bool | None = None) -> _K:
+    t: TypeAdapter[_K] = get_type_adapter(typ)  # type: ignore[arg-type]
+    return t.validate_python(value, strict=strict)
