@@ -1,4 +1,4 @@
-qbittorrent-api==2024.11.69
+qbittorrent-api==2024.11.70
 click~=8.1.7
 sslog==0.0.0a51
 pydantic==2.10.0
