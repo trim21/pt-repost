@@ -163,13 +163,6 @@ class Application:
             torrent_name, parse_mediainfo_json(mediainfo_json)
         )
 
-        if douban_id:
-            url = f"https://movie.douban.com/subject/{douban_id}/"
-        elif imdb_id:
-            url = f"https://www.imdb.com/title/{imdb_id}/"
-        else:
-            raise ValueError("missing media site id")
-
         images = self.db.fetch_all("select * from image where task_id = ?", [task_id])
 
         if (len(images) < count) and not dry_run:
@@ -190,6 +183,13 @@ class Application:
                 "select url from image where task_id = ?", [task_id]
             )
         ]
+
+        if douban_id:
+            url = f"https://movie.douban.com/subject/{douban_id}/"
+        elif imdb_id:
+            url = f"https://www.imdb.com/title/{imdb_id}/"
+        else:
+            raise ValueError("missing media site id")
 
         info = extract_meta_info(douban_id or imdb_id)
         if dry_run:

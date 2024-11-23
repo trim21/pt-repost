@@ -21,6 +21,7 @@ class MediaType(enum.IntEnum):
 
 @dataclasses.dataclass(frozen=True, slots=True)
 class Info:
+    raw: str
     region: Region
     subtitle: str
 
@@ -66,7 +67,11 @@ def extract_meta_info(douban_id: str):
     if not subtitle:
         raise ValueError(f"failed to find subtitle from PTGen-info {s!r}")
 
-    return Info(region=match_region(s), subtitle=subtitle.group(1))
+    return Info(
+        region=match_region(s),
+        subtitle=subtitle.group(1),
+        raw=s,
+    )
 
 
 if __name__ == "__main__":

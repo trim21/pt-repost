@@ -55,6 +55,9 @@ class MediaInfo:
 def parse_mediainfo_json(s: str) -> MediaInfo:
     obj = json.loads(s)
 
+    if not obj["media"]:
+        raise ValueError("failed to get mediainfo, please report this issue")
+
     videos = [s for s in obj["media"]["track"] if s["@type"] == "Video"]
     audio = [s for s in obj["media"]["track"] if s["@type"] == "Audio"]
     text = [s for s in obj["media"]["track"] if s["@type"] == "Text"]
