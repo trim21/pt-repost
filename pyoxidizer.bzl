@@ -282,7 +282,7 @@ def make_install(exe):
     files = FileManifest()
 
     # Add the generated executable to our install layout in the root directory.
-    files.add_python_resource(".", exe)
+    files.add_python_resource("pt-repost", exe)
 
     return files
 
