@@ -35,18 +35,18 @@ jobs:
       - name: check binary
         shell: bash
         run: |
-          cd build/*/release/install/pt-repost
-          ./pt-repost/pt-repost --help
+          cp build/*/release/install/pt-repost dist -r
+          ./dist/pt-repost/pt-repost --help
         if: runner.os != 'Windows'
 
       - name: check windows binary
         shell: bash
         run: |
-          cd build/*/release/install/
-          ./pt-repost/pt-repost.exe --help
+          cp build/*/release/install/pt-repost dist -r
+          ./dist/pt-repost/pt-repost.exe --help
         if: runner.os == 'Windows'
 
       - uses: actions/upload-artifact@v4
         with:
           name: 'wheels-${{ runner.os }}'
-          path: ./build/*
+          path: ./dist/*
