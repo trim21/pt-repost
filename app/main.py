@@ -1,6 +1,9 @@
+import sqlite3
+
 import click
 import qbittorrentapi
 from importlib_resources import read_text
+from sslog import logger
 
 from app.application import Application
 from app.config import load_config
@@ -35,6 +38,9 @@ def main(info_hash: str, douban: str):
     app.db.execute(read_text("app", "sql/mediainfo.sql"))
     app.db.execute(read_text("app", "sql/image.sql"))
 
-    app.add_task(info_hash.lower(), douban_id=douban)
+    try:
+        app.add_task(info_hash.lower(), douban_id=douban)
+    except sqlite3.IntegrityError:
+        logger.warning("任务已经存在")
 
     app.process_tasks(info_hash.lower())
