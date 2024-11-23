@@ -1,8 +1,9 @@
 import click
 import qbittorrentapi
+from importlib_resources import read_text
 
 from app.application import Application
-from app.config import get_source_text, load_config
+from app.config import load_config
 from app.db import Database
 
 
@@ -30,9 +31,9 @@ def main(info_hash: str, douban: str):
         ),
     )
 
-    app.db.execute(get_source_text("sql/task.sql"))
-    app.db.execute(get_source_text("sql/image.sql"))
-    app.db.execute(get_source_text("sql/mediainfo.sql"))
+    app.db.execute(read_text("app", "sql/task.sql"))
+    app.db.execute(read_text("app", "sql/mediainfo.sql"))
+    app.db.execute(read_text("app", "sql/image.sql"))
 
     app.add_task(info_hash.lower(), douban_id=douban)
 

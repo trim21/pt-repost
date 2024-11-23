@@ -1,5 +1,4 @@
 import dataclasses
-import importlib.resources
 import os
 import sys
 from pathlib import Path
@@ -9,10 +8,6 @@ import tomli
 from pydantic import Field, TypeAdapter
 
 video_ext = {".mkv", ".mp4", ".ts"}
-
-
-def get_source_text(file: str) -> str:
-    return importlib.resources.files("app").joinpath(file).read_text("utf-8")
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
