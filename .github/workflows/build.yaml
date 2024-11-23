@@ -33,15 +33,15 @@ jobs:
       - name: check binary
         shell: bash
         run: |
-          cp build/*/release/install/pt-repost dist -r
-          ./dist/pt-repost --help
+          cp build/*/release/install dist -r
+          ./dist/pt-repost/pt-repost --help
         if: runner.os != 'Windows'
 
       - name: check windows binary
         shell: bash
         run: |
-          cp build/*/release/install/pt-repost dist -r
-          ./dist/pt-repost.exe --help
+          cp build/*/release/install dist -r
+          ./dist/pt-repost/pt-repost.exe --help
         if: runner.os == 'Windows'
 
       - uses: actions/upload-artifact@v4
