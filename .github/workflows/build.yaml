@@ -34,14 +34,14 @@ jobs:
         shell: bash
         run: |
           cp build/*/release/install/pt-repost dist -r
-          ./dist/pt-repost/pt-repost --help
+          ./dist/pt-repost --help
         if: runner.os != 'Windows'
 
       - name: check windows binary
         shell: bash
         run: |
           cp build/*/release/install/pt-repost dist -r
-          ./dist/pt-repost/pt-repost.exe --help
+          ./dist/pt-repost.exe --help
         if: runner.os == 'Windows'
 
       - uses: actions/upload-artifact@v4
