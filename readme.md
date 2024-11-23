@@ -5,6 +5,10 @@
 使用 pip 或者 pipx 命令安装
 
 ```shell
+pip install https://github.com/trim21/pt-repost/archive/refs/heads/master.zip
+```
+
+```shell
 pipx install https://github.com/trim21/pt-repost/archive/refs/heads/master.zip
 ```
 
