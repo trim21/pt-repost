@@ -165,9 +165,15 @@ class SSD(Website):
         options: dict[str, Any],
         info: Info,
     ):
+        info = bencode2.bdecode(torrent)[b"info"]
+        name = six.ensure_str(info[b"name"])
+        if not info.get(b"files"):
+            s = name.split(".")
+            name = ".".join(s[:-1])
+
         data: dict[str, Any] = options | {
             # douban/imdb url
-            "name": six.ensure_str(bencode2.bdecode(torrent)[b"info"][b"name"]),
+            "name": name,
             "small_descr": info.subtitle,  # 副标题
             "url": url,
             "url_vimages": "\n".join(images),
