@@ -36,6 +36,7 @@ class Audio:
 class Text:
     title: str = Field("", alias="Title")
     language: str = Field("", alias="Language")
+    language_string: str = Field("Language_String", alias="Language_String")
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)

@@ -121,10 +121,11 @@ class SSD(Website):
                     options["hdrvivid"] = "1"
 
         for text in m.text:
+            language_string = text.language_string.lower()
             lang = text.language.lower()
             title = text.title.lower()
             if any(
-                ((word in lang) or (word in title))
+                ((word in lang) or (word in title) or ("chinese" in language_string))
                 for word in {
                     "zh",
                     "zh-cn",
