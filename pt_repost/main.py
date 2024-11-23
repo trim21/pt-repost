@@ -13,7 +13,8 @@ from pt_repost.db import Database
 @click.command()
 @click.argument("info_hash")
 @click.argument("douban")
-def main(info_hash: str, douban: str):
+@click.option("--dry-run", is_flag=True, default=False)
+def main(info_hash: str, douban: str, dry_run: bool = False):
     """
     run with
 
@@ -45,4 +46,4 @@ def main(info_hash: str, douban: str):
     except sqlite3.IntegrityError:
         logger.warning("任务已经存在")
 
-    app.process_tasks(info_hash.lower())
+    app.process_tasks(info_hash.lower(), dry_run=dry_run)

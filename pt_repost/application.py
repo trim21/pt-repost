@@ -73,7 +73,7 @@ class Application:
             [info_hash.lower(), site, Status.unknown, douban_id, imdb_id],
         )
 
-    def process_tasks(self, info_hash: str):
+    def process_tasks(self, info_hash: str, dry_run: bool):
         tasks: list[tuple[int, str, str, int, str, str]] = self.db.fetch_all(
             "select task_id,info_hash,site,status,douban_id,imdb_id from task where status != ? and info_hash = ?",
             [Status.done, info_hash],
@@ -99,7 +99,15 @@ class Application:
                 logger.trace("{} is partial downloaded", info_hash)
                 continue
 
-            self.process_task(task_id, info_hash, site, torrent, douban_id, imdb_id)
+            self.process_task(
+                task_id,
+                info_hash,
+                site,
+                torrent,
+                douban_id,
+                imdb_id,
+                dry_run=dry_run,
+            )
 
     def process_task(
         self,
@@ -109,6 +117,7 @@ class Application:
         t: QbTorrent,
         douban_id: str,
         imdb_id: str,
+        dry_run: bool,
     ):
         files = [parse_obj_as(QbFile, x) for x in self.qb.torrents_files(info_hash)]
         files = [f for f in files if f.name.lower().endswith(tuple(video_ext))]
@@ -180,18 +189,21 @@ class Application:
             raise ValueError("missing media site id")
 
         info = extract_meta_info(douban_id or imdb_id)
-        logger.info("create post")
-        site_implement.create_post(
-            tc,
-            mediainfo_text=mediainfo_text,
-            images=images,
-            options=options,
-            url=url,
-            info=info,
-        )
-        self.db.execute(
-            "update task set status = ? where task_id = ?", [Status.done, task_id]
-        )
+        if dry_run:
+            logger.info("dry-run mode, skipping create post")
+        else:
+            logger.info("create post")
+            site_implement.create_post(
+                tc,
+                mediainfo_text=mediainfo_text,
+                images=images,
+                options=options,
+                url=url,
+                info=info,
+            )
+            self.db.execute(
+                "update task set status = ? where task_id = ?", [Status.done, task_id]
+            )
 
     def upload_image(self, file: Path, _site: str):
         return self.upload_pixhost(file)

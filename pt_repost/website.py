@@ -7,6 +7,7 @@ import bencode2
 import guessit
 import httpx
 import six
+from sslog import logger
 
 from pt_repost.config import Config
 from pt_repost.mediainfo import MediaInfo
@@ -123,7 +124,8 @@ class SSD(Website):
             lang = text.language.lower()
             title = text.title.lower()
             for word in {"zh-cn", "zh-cn", "zh-cn", "chinese", "cmn-hans", "cmn-hant"}:
-                if word in lang or word in title:
+                if (word in lang) or (word in title):
+                    logger.info('find tag "中字"')
                     options["subtitlezh"] = "1"
                     break
 
