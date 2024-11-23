@@ -36,14 +36,14 @@ jobs:
         shell: bash
         run: |
           cd build/*/release/install/
-          ./doc2dash --version
+          ./pt-repost --help
         if: runner.os != 'Windows'
 
       - name: check windows binary
         shell: bash
         run: |
           cd build/*/release/install/
-          ./doc2dash.exe --version
+          ./pt-repost.exe --help
         if: runner.os == 'Windows'
 
       - uses: actions/upload-artifact@v4
