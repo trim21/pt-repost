@@ -1,4 +1,9 @@
 qb-url = "http://admin:password@127.0.0.1:8080"
 
+# qb < v4.5.0 无法通过 API 导出种子文件，需要设置路径。比如
+# /usr/local/etc/qBittorrent/data/BT_backup
+# ~/.local/share/qBittorrent/BT_backup
+qb-backup-dir = ''
+
 [website.ssd]
 cookies = '...'

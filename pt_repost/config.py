@@ -24,6 +24,7 @@ class Config:
     http_proxy: str | None = None
     db_path: Path = Path(Path(os.getcwd(), "data.db"))
     qb_url: Annotated[HttpUrl, Field(alias="qb-url")]
+    qb_backup_dir: Annotated[str, Field("", alias="qb-backup-dir")]
 
 
 def load_config():

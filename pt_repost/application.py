@@ -221,17 +221,18 @@ class Application:
         return self.__export_torrent_from_fs(info_hash)
 
     def __export_torrent_from_fs(self, info_hash: str) -> bytes:
-        t = (
-            Path("~/.local/share/qBittorrent/BT_backup")
-            .expanduser()
-            .joinpath(info_hash)
-            .with_suffix(".torrent")
-        )
-        if t.exists():
-            return t.read_bytes()
+        if self.config.qb_backup_dir:
+            t = (
+                Path(self.config.qb_backup_dir)
+                .expanduser()
+                .joinpath(info_hash)
+                .with_suffix(".torrent")
+            )
+            if t.exists():
+                return t.read_bytes()
         raise NotImplementedError(
-            "qBittorrent version < v4.5.0 is not supported, "
-            "unless qBittorrent profile located at ~/.local/share/qBittorrent"
+            "can't find torrent file,  "
+            "set `qb-backup-dir` in config, for example, \"qb-backup-dir = '~/.local/share/qBittorrent'\""
         )
 
     def upload_image(self, file: Path, _site: str):
