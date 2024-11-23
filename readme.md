@@ -3,7 +3,7 @@
 
 确保当前机器安装了 ffmpeg 和 mediainfo。
 
-参照 `config.example.toml` 在 **当前工作路径** 下创建 `config.toml` 文件夹
+参照 `config.example.toml` 在 **当前工作路径** 下创建 `config.toml` 文件。
 
 填写 `qb-url` 和对应站点的 cookies。
 
