@@ -44,6 +44,8 @@ def match_region(info: str) -> Region:
             return Region.UK
         case "中国大陆":
             return Region.Mainland
+        case "中国台湾" | "台湾":
+            return Region.TW
 
     raise NotImplementedError("unknown region", region)
 
