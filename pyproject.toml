@@ -19,6 +19,7 @@ dependencies = [
     'yarl~=1.18.0',
     'guessit~=3.8.0',
     'six',
+    'packaging',
     'importlib_resources~=6.4.5',
 ]
 

@@ -2,6 +2,7 @@ import dataclasses
 import enum
 import tempfile
 import uuid
+from functools import cached_property
 from pathlib import Path
 
 import bencode2
@@ -9,6 +10,7 @@ import httpx
 import qbittorrentapi
 import six
 import yarl
+from packaging.version import Version
 from qbittorrentapi import TorrentState
 from sslog import logger
 
@@ -52,7 +54,7 @@ class QbTorrent:
     amount_left: int
 
 
-@dataclasses.dataclass(kw_only=True, slots=True, frozen=True)
+@dataclasses.dataclass(kw_only=True, frozen=True)
 class Application:
     db: Database
     config: Config
@@ -154,7 +156,7 @@ class Application:
 
         site_implement = SSD(self.config)
 
-        tc = self.qb.torrents_export(info_hash)
+        tc = self.export_torrent(info_hash)
 
         torrent_name = six.ensure_str(bencode2.bdecode(tc)[b"info"][b"name"])
 
@@ -206,6 +208,30 @@ class Application:
             self.db.execute(
                 "update task set status = ? where task_id = ?", [Status.done, task_id]
             )
+
+    @cached_property
+    def qb_version(self) -> Version:
+        return Version(self.qb.app_web_api_version())
+
+    __qb_support_torrent_export = Version("2.8.14")
+
+    def export_torrent(self, info_hash: str) -> bytes:
+        if self.qb_version >= self.__qb_support_torrent_export:
+            return self.qb.torrents_export(info_hash)
+        return self.__export_torrent_from_fs(info_hash)
+
+    def __export_torrent_from_fs(self, info_hash: str) -> bytes:
+        t = (
+            Path("~/.local/share/qBittorrent/BT_backup")
+            .expanduser()
+            .joinpath(info_hash)
+            .with_suffix(".torrent")
+        )
+        if t.exists():
+            return t.read_bytes()
+        raise NotImplementedError(
+            "qb version {} is not supported".format(self.qb.app_version())
+        )
 
     def upload_image(self, file: Path, _site: str):
         return self.upload_pixhost(file)
