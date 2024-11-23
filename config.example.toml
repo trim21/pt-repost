@@ -1,4 +1,4 @@
-qb-url = "http://127.0.0.1:8080"
+qb-url = "http://admin:password@127.0.0.1:8080"
 
 [website.ssd]
 cookies = '...'
