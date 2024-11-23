@@ -38,22 +38,12 @@ class QbFile:
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
 class QbTorrent:
-    added_on: int
-    completion_on: int
-
     name: str
     hash: str
     state: TorrentState
 
-    progress: float
     save_path: str  # final download path
-    content_path: str  # incomplete download path, current file location
-    download_path: str | None  # expected incomplete download path
-    seen_complete: int
     completed: int
-    downloaded: int
-    priority: int
-    availability: float
 
     total_size: int
     size: int

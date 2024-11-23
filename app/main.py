@@ -25,7 +25,9 @@ def main(info_hash: str, douban: str):
         db=Database(cfg.db_path),
         config=cfg,
         qb=qbittorrentapi.Client(
-            host=cfg.qb_url,
+            host=str(cfg.qb_url),
+            password=cfg.qb_url.password,
+            username=cfg.qb_url.username,
             SIMPLE_RESPONSES=True,
             FORCE_SCHEME_FROM_HOST=True,
             VERBOSE_RESPONSE_LOGGING=False,

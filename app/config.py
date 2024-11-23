@@ -5,9 +5,7 @@ from pathlib import Path
 from typing import Annotated
 
 import tomli
-from pydantic import Field, TypeAdapter
-
-video_ext = {".mkv", ".mp4", ".ts"}
+from pydantic import Field, HttpUrl, TypeAdapter
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
@@ -25,7 +23,7 @@ class Config:
     website: Website
     http_proxy: str | None = None
     db_path: Path = Path(Path(os.getcwd(), "data.db"))
-    qb_url: Annotated[str, Field(alias="qb-url")]
+    qb_url: Annotated[HttpUrl, Field(alias="qb-url")]
 
 
 def load_config():
@@ -40,3 +38,6 @@ def load_config():
     )
 
     return config
+
+
+video_ext = {".mkv", ".mp4", ".ts"}
