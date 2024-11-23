@@ -34,6 +34,12 @@ jobs:
 
       - run: ls dist
 
+      - run: |
+          pip install staticx
+          staticx dist/pt-repost dist/pt-repost-static
+          rm dist/pt-repost
+        if: runner.os == 'Linux'
+
       - uses: actions/upload-artifact@v4
         with:
           name: 'wheels-${{ runner.os }}'
