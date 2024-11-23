@@ -26,22 +26,30 @@ jobs:
           python-version: '3.10'
           cache: pip
 
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: pip install pyoxidizer
+
       - run: pip install -r requirements.txt
 
-      - run: pyinstaller --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=app --name pt-repost main.py
+      - run: pyoxidizer build --release
         env:
            PYTHONPATH: '.'
 
-      - run: ls dist
+      - name: check binary
+        shell: bash
+        run: |
+          cd build/*/release/install/
+          ./doc2dash --version
+        if: runner.os != 'Windows'
 
-      - run: |
-          pip install staticx
-          staticx dist/pt-repost dist/pt-repost-static
-          rm dist/pt-repost
-        if: runner.os == 'Linux'
+      - name: check windows binary
+        shell: bash
+        run: |
+          cd build/*/release/install/
+          ./doc2dash.exe --version
+        if: runner.os == 'Windows'
 
       - uses: actions/upload-artifact@v4
         with:
           name: 'wheels-${{ runner.os }}'
-          path: ./dist/*
-          if-no-files-found: ignore
+          path: ./build/*
