@@ -172,6 +172,8 @@ class Application:
         images = self.db.fetch_all("select * from image where task_id = ?", [task_id])
 
         if (len(images) < count) and not dry_run:
+            self.db.execute("delete from image where task_id = ?", [task_id])
+
             with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
                 for file in generate_images(
                     video_file, count=count, tmpdir=Path(tempdir)
