@@ -1,4 +1,4 @@
-从最新的 [github actions](https://github.com/trim21/pt-repost/actions/workflows/build.yaml)
+从最新的 [github actions](https://github.com/trim21/pt-repost/actions/workflows/build.yaml?query=branch%3Amaster)
 下载可执行文件，解压到本地。
 
 确保当前机器安装了 ffmpeg 和 mediainfo。
