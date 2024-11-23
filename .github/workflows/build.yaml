@@ -26,16 +26,25 @@ jobs:
           python-version: '3.10'
           cache: pip
 
-      - run: pip install -r requirements.txt
+      - run: pip install pyoxidizer
 
-      - run: pyinstaller --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=app --name pt-repost main.py
-        env:
-           PYTHONPATH: '.'
+      - run: pyoxidizer build --release
 
-      - run: ls dist
+      - name: check binary
+        shell: bash
+        run: |
+          cp build/*/release/install/pt-repost dist -r
+          ./dist/pt-repost --help
+        if: runner.os != 'Windows'
+
+      - name: check windows binary
+        shell: bash
+        run: |
+          cp build/*/release/install/pt-repost dist -r
+          ./dist/pt-repost.exe --help
+        if: runner.os == 'Windows'
 
       - uses: actions/upload-artifact@v4
         with:
           name: 'wheels-${{ runner.os }}'
           path: ./dist/*
-          if-no-files-found: ignore

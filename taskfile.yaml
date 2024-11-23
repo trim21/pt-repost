@@ -6,6 +6,9 @@ tasks:
       - PYTHONPATH=. pyinstaller.exe --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=app --name pt-repost main.py
       - ./dist/pt-repost.exe
 
+  pyoxidizer:
+    - pyoxidizer run
+
   sync: poetry install --sync
   lock:
     - poetry lock
