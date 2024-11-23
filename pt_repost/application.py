@@ -230,7 +230,8 @@ class Application:
         if t.exists():
             return t.read_bytes()
         raise NotImplementedError(
-            "qb version {} is not supported".format(self.qb.app_version())
+            "qBittorrent version < v4.5.0 is not supported, "
+            "unless qBittorrent profile located at ~/.local/share/qBittorrent"
         )
 
     def upload_image(self, file: Path, _site: str):
