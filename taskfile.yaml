@@ -3,7 +3,7 @@ version: 3
 tasks:
   build:
     cmds:
-      - PYTHONPATH=. pyinstaller.exe --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=app --name pt-repost main.py
+      - PYTHONPATH=. pyinstaller.exe --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=pt_repost --name pt-repost main.py
       - ./dist/pt-repost.exe
 
   pyoxidizer:

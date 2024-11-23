@@ -1,7 +1,14 @@
-从最新的 [github actions](https://github.com/trim21/pt-repost/actions/workflows/build.yaml?query=branch%3Amaster)
-下载可执行文件，解压到本地。
+## 安装
 
-确保当前机器安装了 ffmpeg 和 mediainfo。
+确保当前机器安装了 ffmpeg 和 mediainfo, 以及 python >= 3.10。
+
+使用 pip 或者 pipx 命令安装
+
+```shell
+pipx install https://github.com/trim21/pt-repost/archive/refs/heads/master.zip
+```
+
+## 使用
 
 参照 `config.example.toml` 在 **当前工作路径** 下创建 `config.toml` 文件。
 

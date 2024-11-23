@@ -1,4 +1,4 @@
-from app.website import pattern_hdr10, pattern_hdr10_plus
+from pt_repost.website import pattern_hdr10, pattern_hdr10_plus
 
 
 def test_match_hdr10():

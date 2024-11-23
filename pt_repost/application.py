@@ -4,21 +4,23 @@ import tempfile
 import uuid
 from pathlib import Path
 
+import bencode2
 import httpx
 import qbittorrentapi
+import six
 import yarl
 from qbittorrentapi import TorrentState
 from sslog import logger
 
-from app.config import (
+from pt_repost.config import (
     Config,
     video_ext,
 )
-from app.db import Database
-from app.mediainfo import extract_mediainfo_from_file, parse_mediainfo_json
-from app.meta_info import extract_meta_info
-from app.utils import generate_images, human_readable_size, parse_obj_as
-from app.website import SSD
+from pt_repost.db import Database
+from pt_repost.mediainfo import extract_mediainfo_from_file, parse_mediainfo_json
+from pt_repost.meta_info import extract_meta_info
+from pt_repost.utils import generate_images, human_readable_size, parse_obj_as
+from pt_repost.website import SSD
 
 
 class Status(enum.IntEnum):
@@ -162,8 +164,12 @@ class Application:
 
         site_implement = SSD(self.config)
 
+        tc = self.qb.torrents_export(info_hash)
+
+        torrent_name = six.ensure_str(bencode2.bdecode(tc)[b"info"][b"name"])
+
         options = site_implement.parse_mediainfo_as_options(
-            str(video_file), parse_mediainfo_json(mediainfo_json)
+            torrent_name, parse_mediainfo_json(mediainfo_json)
         )
 
         if douban_id:
@@ -176,7 +182,7 @@ class Application:
         info = extract_meta_info(douban_id or imdb_id)
         logger.info("create post")
         site_implement.create_post(
-            self.qb.torrents_export(info_hash),
+            tc,
             mediainfo_text=mediainfo_text,
             images=images,
             options=options,

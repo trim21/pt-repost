@@ -5,9 +5,9 @@ import qbittorrentapi
 from importlib_resources import read_binary
 from sslog import logger
 
-from app.application import Application
-from app.config import load_config
-from app.db import Database
+from pt_repost.application import Application
+from pt_repost.config import load_config
+from pt_repost.db import Database
 
 
 @click.command()
@@ -36,9 +36,9 @@ def main(info_hash: str, douban: str):
         ),
     )
 
-    app.db.execute(read_binary("app", "sql/task.sql").decode())
-    app.db.execute(read_binary("app", "sql/mediainfo.sql").decode())
-    app.db.execute(read_binary("app", "sql/image.sql").decode())
+    app.db.execute(read_binary("pt_repost", "sql/task.sql").decode())
+    app.db.execute(read_binary("pt_repost", "sql/mediainfo.sql").decode())
+    app.db.execute(read_binary("pt_repost", "sql/image.sql").decode())
 
     try:
         app.add_task(info_hash.lower(), douban_id=douban)

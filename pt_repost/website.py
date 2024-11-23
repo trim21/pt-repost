@@ -6,10 +6,11 @@ from typing import Any
 import bencode2
 import guessit
 import httpx
+import six
 
-from app.config import Config
-from app.mediainfo import MediaInfo
-from app.meta_info import Info, Region
+from pt_repost.config import Config
+from pt_repost.mediainfo import MediaInfo
+from pt_repost.meta_info import Info, Region
 
 pattern_dovi = re.compile(r"\bDolby Vision\b", re.IGNORECASE)
 pattern_hdr10 = re.compile(r"\bHDR10\b", re.IGNORECASE)
@@ -28,10 +29,12 @@ class SSD(Website):
     def __init__(self, cfg: Config):
         self.cfg = cfg
 
-    def parse_mediainfo_as_options(self, filename: str, m: MediaInfo) -> dict[str, Any]:
+    def parse_mediainfo_as_options(
+        self, torrent_name: str, m: MediaInfo
+    ) -> dict[str, Any]:
         options: dict[str, Any] = {}
 
-        guess: dict[str, str] = guessit.guessit(filename)
+        guess: dict[str, str] = guessit.guessit(torrent_name)
 
         match guess.get("type"):
             case "movie":
@@ -68,7 +71,7 @@ class SSD(Website):
             case 3840:  # 2160
                 options["standard_sel"] = 1
             case 1920:  # 1080
-                if "1080i" in filename.lower():
+                if "1080i" in torrent_name.lower():
                     options["standard_sel"] = 3
                 else:
                     options["standard_sel"] = 2
@@ -148,9 +151,9 @@ class SSD(Website):
         options: dict[str, Any],
         info: Info,
     ):
-        data = options | {
+        data: dict[str, Any] = options | {
             # douban/imdb url
-            "name": bencode2.bdecode(torrent)[b"info"][b"name"].decode(),
+            "name": six.ensure_str(bencode2.bdecode(torrent)[b"info"][b"name"]),
             "small_descr": info.subtitle,  # 副标题
             "url": url,
             "url_vimages": "\n".join(images),

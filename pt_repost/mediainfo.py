@@ -10,7 +10,7 @@ from typing import Annotated, List, Optional
 from pydantic import Field
 from sslog import logger
 
-from app.utils import parse_obj_as, run_command
+from pt_repost.utils import parse_obj_as, run_command
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)

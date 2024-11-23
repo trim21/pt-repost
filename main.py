@@ -1,3 +1,3 @@
-from app.main import main
+from pt_repost.main import main
 
 main()
