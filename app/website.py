@@ -189,7 +189,7 @@ class SSD(Website):
             cookies={k: v.value for k, v in cookie.items()},
         )
 
-        print(res.status_code)
         if res.is_redirect:
-            print(res.headers.get("location"))
-        print(res.text)
+            print("https://springsunday.net" + res.headers.get("location"))
+        else:
+            print(res.text)
