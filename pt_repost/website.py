@@ -174,7 +174,7 @@ class SSD(Website):
             "url_poster": "",
             "qr_check": "ok",
             "Media_BDInfo": mediainfo_text,
-            "descr": info.raw,
+            "descr": "",
             "offer": "yes",  # 候选区
         }
 
