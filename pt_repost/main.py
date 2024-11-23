@@ -1,9 +1,6 @@
-import sqlite3
-
 import click
 import qbittorrentapi
 from importlib_resources import read_binary
-from sslog import logger
 
 from pt_repost.application import Application
 from pt_repost.config import load_config
@@ -41,9 +38,6 @@ def main(info_hash: str, douban: str, dry_run: bool = False):
     app.db.execute(read_binary("pt_repost", "sql/mediainfo.sql").decode())
     app.db.execute(read_binary("pt_repost", "sql/image.sql").decode())
 
-    try:
-        app.add_task(info_hash.lower(), douban_id=douban)
-    except sqlite3.IntegrityError:
-        logger.warning("任务已经存在")
+    app.add_task(info_hash.lower(), douban_id=douban)
 
     app.process_tasks(info_hash.lower(), dry_run=dry_run)

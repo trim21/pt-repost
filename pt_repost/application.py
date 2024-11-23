@@ -69,7 +69,7 @@ class Application:
     ):
         self.db.execute(
             """
-            insert into task (info_hash, site, status, douban_id, imdb_id)
+            insert OR IGNORE into task (info_hash, site, status, douban_id, imdb_id)
             values (?, ?, ?, ?, ?)
             """,
             [info_hash.lower(), site, Status.unknown, douban_id, imdb_id],
@@ -82,7 +82,6 @@ class Application:
         )
 
         for task_id, info_hash, site, status, douban_id, imdb_id in tasks:
-            print(task_id, info_hash, site, status)
             torrents = [t for t in self.qb.torrents_info() if t["hash"] == info_hash]
             if not torrents:
                 logger.warning("{} is not downloading", info_hash)
