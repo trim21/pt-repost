@@ -123,11 +123,19 @@ class SSD(Website):
         for text in m.text:
             lang = text.language.lower()
             title = text.title.lower()
-            for word in {"zh-cn", "zh-cn", "zh-cn", "chinese", "cmn-hans", "cmn-hant"}:
-                if (word in lang) or (word in title):
-                    logger.info('find tag "中字"')
-                    options["subtitlezh"] = "1"
-                    break
+            if any(
+                ((word in lang) or (word in title))
+                for word in {
+                    "zh",
+                    "zh-cn",
+                    "chinese",
+                    "cmn-hans",
+                    "cmn-hant",
+                }
+            ):
+                logger.info('find tag "中字"')
+                options["subtitlezh"] = "1"
+                break
 
         return options
 

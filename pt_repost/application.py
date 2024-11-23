@@ -152,25 +152,6 @@ class Application:
 
         count = 3
 
-        images = self.db.fetch_all("select * from image where task_id = ?", [task_id])
-
-        if len(images) < count:
-            with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
-                for file in generate_images(
-                    video_file, count=count, tmpdir=Path(tempdir)
-                ):
-                    url = self.upload_image(file, site)
-                    self.db.execute(
-                        "insert into image (task_id, url) values (?,?)", [task_id, url]
-                    )
-
-        images = [
-            x[0]
-            for x in self.db.fetch_all(
-                "select url from image where task_id = ?", [task_id]
-            )
-        ]
-
         site_implement = SSD(self.config)
 
         tc = self.qb.torrents_export(info_hash)
@@ -187,6 +168,25 @@ class Application:
             url = f"https://www.imdb.com/title/{imdb_id}/"
         else:
             raise ValueError("missing media site id")
+
+        images = self.db.fetch_all("select * from image where task_id = ?", [task_id])
+
+        if (len(images) < count) and not dry_run:
+            with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
+                for file in generate_images(
+                    video_file, count=count, tmpdir=Path(tempdir)
+                ):
+                    url = self.upload_image(file, site)
+                    self.db.execute(
+                        "insert into image (task_id, url) values (?,?)", [task_id, url]
+                    )
+
+        images = [
+            x[0]
+            for x in self.db.fetch_all(
+                "select url from image where task_id = ?", [task_id]
+            )
+        ]
 
         info = extract_meta_info(douban_id or imdb_id)
         if dry_run:
