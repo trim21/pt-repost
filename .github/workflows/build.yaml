@@ -35,7 +35,7 @@ jobs:
       - name: check binary
         shell: bash
         run: |
-          cd build/*/release/install/
+          cd build/*/release/install/pt-repost
           ./pt-repost/pt-repost --help
         if: runner.os != 'Windows'
 
