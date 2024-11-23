@@ -144,10 +144,7 @@ class Application:
         images = self.db.fetch_all("select * from image where task_id = ?", [task_id])
 
         if len(images) < count:
-            with tempfile.TemporaryDirectory(
-                dir="/export/ssd-2t/tmp",
-                prefix="pt-repost-",
-            ) as tempdir:
+            with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
                 for file in generate_images(
                     video_file, count=count, tmpdir=Path(tempdir)
                 ):
