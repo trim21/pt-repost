@@ -133,14 +133,14 @@ def make_exe():
     # python_config.allocator_backend = "jemalloc"
 
     # Use mimalloc as Python's memory allocator.
-    python_config.allocator_backend = "mimalloc"
+    # python_config.allocator_backend = "mimalloc"
 
     # Use snmalloc as Python's memory allocator.
     # python_config.allocator_backend = "snmalloc"
 
     # Let Python choose which memory allocator to use. (This will likely
     # use the malloc()/free() linked into the program.
-    # python_config.allocator_backend = "default"
+    python_config.allocator_backend = "default"
 
     # Enable the use of a custom allocator backend with the "raw" memory domain.
     # python_config.allocator_raw = True
