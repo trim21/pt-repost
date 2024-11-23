@@ -31,8 +31,6 @@ jobs:
       - run: pip install -r requirements.txt
 
       - run: pyoxidizer build --release
-        env:
-           PYTHONPATH: '.'
 
       - name: check binary
         shell: bash
