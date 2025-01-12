@@ -1,15 +1,14 @@
 version: 3
 
 tasks:
-  build:
-    cmds:
-      - PYTHONPATH=. pyinstaller.exe --onefile --specpath etc/pyinstaller/ --collect-all=babelfish --collect-all=pt_repost --name pt-repost main.py
-      - ./dist/pt-repost.exe
+  default:
+    - ruff check . --fix --fixable=ALL
+    - ruff format .
+    - mypy .
 
-  pyoxidizer:
-    - pyoxidizer run
+  sync:
+    cmd: 'uv sync {{- if eq OS "linux" }} --locked --no-dev {{- end }}'
 
-  sync: poetry install --sync
-  lock:
-    - poetry lock
-    - poetry install --sync
+  dev: watchexec -e py,sql,toml -w pt_repost --delay-run 1s --no-process-group -- python ./main.py
+
+  server: uvicorn pt_repost.server:app --port 8745 --host 0.0.0.0 --reload

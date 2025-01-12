@@ -1,5 +1,6 @@
 create table if not exists image (
-    image_id integer primary key autoincrement,
-    task_id integer,
-    url text
+    info_hash text not null,
+    uuid uuid not null default gen_random_uuid(),
+    url text,
+    primary key (info_hash, uuid)
 );

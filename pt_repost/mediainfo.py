@@ -7,6 +7,7 @@ from pathlib import Path
 from shutil import which
 from typing import Annotated, List, Optional
 
+import orjson
 from pydantic import Field
 from sslog import logger
 
@@ -15,16 +16,17 @@ from pt_repost.utils import parse_obj_as, run_command
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
 class Track:
-    hdr_format: str = Field("", alias="HDR_Format")
-    hdr_format_string: str = Field("", alias="HDR_Format_String")
-    video_count: Optional[str] = Field(None, alias="VideoCount")
-    audio_count: Optional[str] = Field(None, alias="AudioCount")
-    text_count: Optional[str] = Field(None, alias="TextCount")
-    file_extension: Optional[str] = Field(None, alias="FileExtension")
-    format: str = Field(alias="Format")
+    hdr_format: Annotated[str, Field("", alias="HDR_Format")]
+    hdr_format_string: Annotated[str, Field("", alias="HDR_Format_String")]
+    hdr_format_compatibility: Annotated[str, Field("", alias="HDR_Format_Compatibility")]
+    video_count: Annotated[Optional[str], Field(None, alias="VideoCount")]
+    audio_count: Annotated[Optional[str], Field(None, alias="AudioCount")]
+    text_count: Annotated[Optional[str], Field(None, alias="TextCount")]
+    file_extension: Annotated[Optional[str], Field(None, alias="FileExtension")]
+    format: Annotated[str, Field(alias="Format")]
 
-    width: int = Field(alias="Width")
-    height: int = Field(alias="Height")
+    width: Annotated[int, Field(alias="Width")]
+    height: Annotated[int, Field(alias="Height")]
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
@@ -74,14 +76,22 @@ def extract_mediainfo_from_file(file: Path) -> tuple[str, str]:
     with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
         out_file = Path(tempdir, "mediainfo.txt")
         run_command(
-            [mediainfo, f"--LogFile={out_file}", str(file)],
+            [mediainfo, f"--LogFile={out_file}", file.name],
+            cwd=str(file.parent),
             stdout=subprocess.DEVNULL,
         )
 
         json_file = Path(tempdir, "mediainfo.json")
         run_command(
-            [mediainfo, f"--LogFile={json_file}", "--output=JSON", str(file)],
+            [mediainfo, f"--LogFile={json_file}", "--output=JSON", file.name],
+            cwd=str(file.parent),
             stdout=subprocess.DEVNULL,
         )
 
-        return out_file.read_text("utf-8"), json_file.read_text("utf-8")
+        return (
+            out_file.read_text("utf-8"),
+            orjson.dumps(
+                orjson.loads(json_file.read_text("utf-8")),
+                option=orjson.OPT_INDENT_2,
+            ).decode(),
+        )

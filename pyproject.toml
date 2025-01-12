@@ -9,25 +9,37 @@ requires-python = '~=3.10'
 description = ''
 
 dependencies = [
+    'orjson~=3.10',
+    'uuid-utils~=0.10',
+    'rich~=13.9',
+    'cryptography~=44.0',
+    'xxhash~=3.5',
     'qbittorrent-api==2024.11.70',
     'click~=8.1.7',
     'sslog==0.0.0a51',
     'pydantic==2.10.1',
-    'httpx==0.27.2',
+    'httpx~=0.28.0',
     'bencode2~=0.3.15',
     'tomli~=2.1.0',
-    'yarl~=1.18.0',
-    'guessit~=3.8.0',
-    'six',
-    'packaging',
-    'importlib_resources~=6.4.5',
+    'yarl~=1.18',
+    'guessit~=3.8',
+    'six~=1.17',
+    'psycopg[binary,pool]~=3.2.3',
+    'regex~=2024.11',
+    'rapidocr_onnxruntime~=1.4', # 识别硬字幕
+    'pillow~=11.0',
+    'durationpy',
+    'fastapi',
+    'uvicorn',
+    'asyncpg',
+    'jinja2'
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
-    'types-six',
-    'mypy',
-    'pre-commit'
+    'types-regex~=2024.11',
+    'types-six~=1.17',
+    'mypy'
 ]
 
 [project.scripts]
@@ -35,20 +47,25 @@ pt-repost = 'pt_repost.main:main'
 
 [tool.pytest.ini_options]
 cache_dir = '.venv/.cache/pytest'
-pythonpath = [
-    "src"
-]
 
 [tool.mypy]
+exclude = 'build,data'
 mypy_path = '$MYPY_CONFIG_FILE_DIR'
 python_version = '3.10'
-#strict = true
-allow_redefinition = true
+disable_error_code = ["no-any-return"]
+strict = true
 ignore_missing_imports = true
 check_untyped_defs = true
-warn_no_return = false
-warn_redundant_casts = true
-explicit_package_bases = true
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.format]
 
 [tool.ruff.lint]
-extend-select = ['I']
+preview = true
+extend-select = ['I', 'PLW1514']
+unfixable = ['F401']
