@@ -13,14 +13,10 @@ repos:
       - id: check-added-large-files # check for file bigger than 500kb
       - id: debug-statements
       - id: trailing-whitespace
-        exclude: '.*\.bin'
       - id: mixed-line-ending
         args: [--fix=lf]
-        exclude: '.*\.bin'
       - id: end-of-file-fixer
-        exclude: '.*\.bin'
       - id: fix-byte-order-marker
-        exclude: '.*\.bin'
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
@@ -28,7 +24,7 @@ repos:
     hooks:
       # Run the linter.
       - id: ruff
-        args: [ --fix, --fixable=ALL ]
+        args: [--fix, --fixable=ALL]
 
   - repo: https://github.com/psf/black
     rev: 24.10.0
