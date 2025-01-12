@@ -4,6 +4,7 @@ import dataclasses
 import enum
 import functools
 import io
+import json
 import re
 import tempfile
 import time
@@ -211,8 +212,8 @@ class Application:
                     rss.url,
                     rss.exclude_url,
                     rss.website,
-                    rss.includes,
-                    rss.excludes,
+                    json.dumps(rss.includes),
+                    json.dumps(rss.excludes),
                     rss.interval,
                 ],
             )

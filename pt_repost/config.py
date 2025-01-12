@@ -50,8 +50,8 @@ class Rss:
     url: str
     exclude_url: str = ""
     website: str
-    includes: Annotated[list[re.Pattern[str]], Field(default_factory=list)]
-    excludes: Annotated[list[re.Pattern[str]], Field(default_factory=list)]
+    includes: Annotated[list[str | list[str]], Field(default_factory=list)]
+    excludes: Annotated[list[str | list[str]], Field(default_factory=list)]
     interval: Annotated[int, Field(60 * 30), BeforeValidator(parse_go_duration_str)]
 
 
