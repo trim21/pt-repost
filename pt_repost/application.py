@@ -1253,7 +1253,7 @@ def fix_title(title: str, torrent: bytes, meta_info: FullSubjectInfo) -> str:
     if meta_info.release_type != "tv":
         return title
 
-    if pattern_episodes.match(title):
+    if pattern_episodes.search(title):
         # title with episode, no need to fix
         # for example
         # Riverside.Code.at.Qingming.Festival.S01E06-E07.2024.2160p.WEB-DL.H265.AAC-Group
