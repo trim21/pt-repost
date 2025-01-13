@@ -235,6 +235,8 @@ class Application:
         self.__debug_report()
 
     def __debug_report(self) -> None:
+        if not self.config.debug:
+            return
         rows = cast(
             list[tuple[str, str, datetime, float]],
             self.db.fetch_all(
