@@ -21,7 +21,6 @@ import guessit
 import httpx
 import orjson
 import qbittorrentapi
-import rich
 import xxhash
 import yarl
 from pydantic import Field
@@ -493,7 +492,6 @@ class Application:
             try:
                 self.process_task(t=t)
             except Exception as e:
-                rich.print(e)
                 logger.warning("failed to process task {!r} {}", e, e)
                 self.db.execute(
                     """
@@ -638,7 +636,6 @@ class Application:
         names = [info.name, info.original_name]
 
         douban_info = self._get_douban_id_from_imdb(info.external_ids.imdb_id, guess["season"])
-        print(douban_info)
 
         if douban_info:
             douban_id = douban_info.id.rsplit("/")[-1]
@@ -813,7 +810,7 @@ class Application:
         data = r.json()
 
         if data["status_code"] != 200:
-            print(data)
+            raise FailedToUploadImage(r.status_code, r.text)
 
         return data["image"]["url"]
 

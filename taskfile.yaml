@@ -9,6 +9,6 @@ tasks:
   sync:
     cmd: 'uv sync {{- if eq OS "linux" }} --locked --no-dev {{- end }}'
 
-  dev: watchexec -e py,sql,toml -w pt_repost --delay-run 1s --no-process-group -- python ./main.py
+  dev: watchexec -e py,sql,toml -w pt_repost --delay-run 1s --no-process-group -- python ./main.py daemon
 
   server: uvicorn pt_repost.server:app --port 8745 --host 0.0.0.0 --reload
