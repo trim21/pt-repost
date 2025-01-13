@@ -19,7 +19,7 @@ COPY --from=build /app/requirements.txt .
 
 ENV PIP_ROOT_USER_ACTION=ignore
 
-RUN pip install --no-cache -r requirements.txt
+RUN pip install --only-binary=:all: --no-cache -r requirements.txt
 
 COPY . .
 
