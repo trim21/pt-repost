@@ -372,14 +372,6 @@ class Application:
 
         site_implement = SSD(self.config)
 
-        options = site_implement.parse_mediainfo_as_options(
-            title, parse_mediainfo_json(mediainfo_json)
-        )
-
-        if isinstance(site_implement, SSD):
-            if hard_code_chinese_subtitle:
-                options["subtitlezh"] = "1"
-
         tc = self.export_torrent(t.hash)
 
         logger.info("create post")
@@ -398,9 +390,19 @@ class Application:
         if imdb_id:
             info = dataclasses.replace(info, imdb_id=imdb_id)
 
+        title = fix_title(title, tc, info)
+
+        options = site_implement.parse_mediainfo_as_options(
+            title, parse_mediainfo_json(mediainfo_json)
+        )
+
+        if isinstance(site_implement, SSD):
+            if hard_code_chinese_subtitle:
+                options["subtitlezh"] = "1"
+
         new_torrent = site_implement.create_post(
             tc,
-            release_name=fix_title(title, tc, info),
+            release_name=title,
             mediainfo_text=mediainfo_text,
             images=images,
             options=options,

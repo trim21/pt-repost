@@ -32,7 +32,7 @@ class SSD(Website):
 
         guess: dict[str, Any] = guessit.guessit(release_name)
 
-        if "season" in guess and "episode" not in guess:
+        if ("season" in guess) and ("episode" not in guess):
             options["pack"] = "1"
 
         match guess.get("type"):

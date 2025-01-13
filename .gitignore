@@ -8,3 +8,5 @@ tmp/
 *.py[cd]
 config.toml
 data/
+
+a.py
