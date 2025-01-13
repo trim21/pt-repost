@@ -1,9 +1,76 @@
-qb-url = "http://admin:password@127.0.0.1:8080"
+node-id = 'dev-node-1'
 
-# qb < v4.5.0 无法通过 API 导出种子文件，需要设置路径。比如
-# /usr/local/etc/qBittorrent/data/BT_backup
-# ~/.local/share/qBittorrent/BT_backup
-qb-backup-dir = ''
+http_proxy = "http://127.0.0.1:1080"
+qb-url = "http://127.0.0.1:8080"
+
+pg_host = '127.0.0.1'
+pg_port = 5432
+
+pg_user = '...'
+pg_password = '...'
+
+target-website = 'ssd'
+
+max-single-torrent-size = '20GiB'
+
+max-processing-size = '100GiB'
+max-processing-per-node = 4
+
+tmdb-api-token = '...'
+
+data-dir = './data'
+
+debug = false
+
+includes = [
+
+]
+
+# recent-release-seconds = 14400
+# 跳过 1h 之前发布的种子
+recent-release = '1h'
+
+excludes = [
+    '(?i)\b(dovi|DV|Dolby Vision)\b',
+    '(?i)\b720p\b',
+    '(?i)\bDragon Ball DAIMA\b',
+    '(?i)\b(TX|iQIYI|KKTV|YOUKU|HAMi)\b',
+    #    '\bDoVi\b',
+    #    '\bDV\b',
+    '(?i)\b1080p\b.*\b(x|h)265\b',
+    '(?i)-cmct$',
+    '(?i)-cmctv$',
+]
+
+[[rss]]
+url = "..."
+
+# 禁转的 rss 链接，可以留空
+# exclude_url = "..."
+
+website = "..."
+# 正则，每个组内的是 “且” 关系，不同的组之间是 “或” 关系。
+#
+# 比如，以下的例子会下载所有的 hhweb 的 netflix/amazon Web-DL 和所有的 cmct 的种子。
+# includes = [
+#    [ '(?i)\bWEB-DL\b', '(?i)\b(netflix|amzn)\b','(?i)-hhweb$', ],
+#    [ '(?i)-cmct', ],
+#]
+
+
+includes = [
+    [
+        '(?i)\bWEB-DL\b',
+        '(?i)\b(nf|netflix|amzn|ATVP|DSNP)\b',
+        '(?i)-(mweb|hhweb)$',
+    ]
+]
+
+# 正则
+excludes = [
+    '(?i)\b720p\b',
+]
 
 [website.ssd]
 cookies = '...'
+passkey = '...'
