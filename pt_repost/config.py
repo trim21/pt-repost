@@ -56,6 +56,11 @@ class Rss:
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
+class Image:
+    cmct_api_token: str = ""
+
+
+@dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
 class Config:
     debug: bool = False
     node_id: Annotated[str, Field(alias="node-id", min_length=1)] = os.getenv(
@@ -64,6 +69,7 @@ class Config:
 
     target_website: Annotated[str, Field(alias="target-website")]
 
+    images: Image
     website: Website
     rss: Annotated[list[Rss], Field(default_factory=list)]
 

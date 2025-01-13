@@ -71,6 +71,9 @@ excludes = [
     '(?i)\b720p\b',
 ]
 
+[images]
+cmct_api_token = '...'
+
 [website.ssd]
 cookies = '...'
 passkey = '...'

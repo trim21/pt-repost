@@ -793,9 +793,33 @@ class Application:
         return self.qb.torrents_export(info_hash)
 
     def upload_image(self, file: Path, _site: str) -> str:
-        return self.upload_pixhost(file)
+        return self.upload_cmct(file)
+
+    def upload_cmct(self, file: Path) -> str:
+        image_content = file.read_bytes()
+
+        r = httpx.post(
+            "https://cmct.xyz/api/1/upload",
+            headers={
+                "X-API-Key": self.config.images.cmct_api_token,
+            },
+            files={"source": ("pt-repost-" + str(uuid.uuid4()) + file.suffix, image_content)},
+            data={"format": "json"},
+        )
+
+        if r.status_code != 200:
+            raise FailedToUploadImage(r.status_code, r.text)
+
+        data = r.json()
+
+        if data["status_code"] != 200:
+            print(data)
+
+        return data["image"]["url"]
 
     def upload_pixhost(self, file: Path) -> str:
+        """被pixhost拉黑了，暂时无法使用"""
+
         image_content = file.read_bytes()
         logger.debug(
             "upload image {} size {}",
