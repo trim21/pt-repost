@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY uv.lock pyproject.toml ./
 
-RUN uv export --no-extra dev --locked --no-emit-project > /app/requirements.txt
+RUN uv export --no-group dev --locked --no-emit-project > /app/requirements.txt
 
 FROM python:3.10-slim
 
