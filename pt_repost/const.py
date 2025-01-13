@@ -26,7 +26,7 @@ RSS_ITEM_STATUS_PROCESSING: Final = (
 
 SSD_REMOVED_MESSAGE: Final = "Torrent not registered with this tracker"
 
-DEFAULT_HEADERS = {
+DEFAULT_HEADERS: Final = {
     "user-agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
         + " AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
@@ -34,4 +34,4 @@ DEFAULT_HEADERS = {
 }
 
 
-QB_CATEGORY = "pt-repost"
+QB_CATEGORY: Final = "pt-repost"
