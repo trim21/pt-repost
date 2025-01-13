@@ -1,4 +1,3 @@
-import re
 from typing import Final
 
 LOCK_KEY_SCHEDULE_RSS: Final = "schedule"
@@ -26,10 +25,6 @@ RSS_ITEM_STATUS_PROCESSING: Final = (
 )
 
 SSD_REMOVED_MESSAGE: Final = "Torrent not registered with this tracker"
-
-pattern_season_suffix: Final = re.compile("第.季$")
-pattern_web_dl: Final = re.compile(r"\b(web-dl|webdl)\b", re.IGNORECASE)
-pattern_dovi: Final = re.compile(r"\b(dovi|DV|Dolby Vision)\b", re.IGNORECASE)
 
 DEFAULT_HEADERS = {
     "user-agent": (

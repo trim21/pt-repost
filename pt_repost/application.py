@@ -48,12 +48,12 @@ from pt_repost.const import (
     TASK_STATUS_FAILED,
     TASK_STATUS_RUNNING,
     TASK_STATUS_SUCCESS,
-    pattern_web_dl,
 )
 from pt_repost.db import Database
 from pt_repost.douban import DoubanSubject
 from pt_repost.hardcode_subtitle import check_hardcode_chinese_subtitle
 from pt_repost.mediainfo import extract_mediainfo_from_file, parse_mediainfo_json
+from pt_repost.patterns import pattern_web_dl
 from pt_repost.tmdb import (
     FullSubjectInfo,
     TMDBMovieDetail,
@@ -70,7 +70,7 @@ from pt_repost.utils import (
     parse_json_as,
     parse_obj_as,
 )
-from pt_repost.website import SSD, pattern_dovi
+from pt_repost.website import SSD
 
 
 def format_exc(e: Exception) -> str:
@@ -326,12 +326,7 @@ class Application:
             self.db.execute("delete from image where info_hash = $1", [t.hash])
             with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
                 image_format = "png"
-                if (
-                    pattern_web_dl.search(title)
-                    and pattern_dovi.search(title)
-                    and re.search(r"\b2160p\b", title, re.IGNORECASE)
-                    and re.search(r"\bhdr\b", title, re.IGNORECASE)
-                ):
+                if pattern_web_dl.search(title):
                     image_format = "jpg"
 
                 image_files = list(
