@@ -3,7 +3,7 @@ version: 3
 tasks:
   default:
     - ruff check . --fix --fixable=ALL
-    - ruff format .
+    - black .
     - mypy .
 
   sync:
