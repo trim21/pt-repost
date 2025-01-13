@@ -13,21 +13,6 @@ from starlette.responses import HTMLResponse, JSONResponse
 from pt_repost.config import load_config
 from pt_repost.const import RSS_ITEM_STATUS_SKIPPED
 
-cfg = load_config()
-
-pool = asyncpg.create_pool(cfg.pg_dsn())
-
-
-@asynccontextmanager
-async def lifespan(_app: fastapi.FastAPI) -> AsyncGenerator[None, None]:
-    await pool
-    yield
-
-
-app = fastapi.FastAPI(debug=cfg.debug, lifespan=lifespan)
-
-templates = Jinja2Templates(directory=str(Path(__file__).parent.joinpath("templates").resolve()))
-
 
 class ORJSONResponse(JSONResponse):
     def render(self, content: Any) -> bytes:
@@ -43,6 +28,9 @@ class _Render(Protocol):
         headers: Mapping[str, str] | None = ...,
         media_type: str | None = ...,
     ) -> HTMLResponse: ...
+
+
+templates = Jinja2Templates(directory=str(Path(__file__).parent.joinpath("templates").resolve()))
 
 
 async def __render(request: Request) -> _Render:
@@ -68,28 +56,42 @@ async def __render(request: Request) -> _Render:
 Render = Annotated[_Render, Depends(__render)]
 
 
-@app.get("/")
-async def index(render: Render) -> HTMLResponse:
-    torrents = await pool.fetch(
-        """select * from rss_item where status != $1 order by updated_at desc""",
-        RSS_ITEM_STATUS_SKIPPED,
-    )
+def create_app(config_file):
+    cfg = load_config(config_file)
 
-    return render(
-        "index.html.j2",
-        ctx={"torrents": torrents},
-    )
+    pool = asyncpg.create_pool(cfg.pg_dsn())
 
+    @asynccontextmanager
+    async def lifespan(_app: fastapi.FastAPI) -> AsyncGenerator[None, None]:
+        await pool
+        yield
+        await pool.close()
 
-@app.get("/{website}/{guid}")
-async def rss_item(website: str, guid: str, render: Render) -> HTMLResponse:
-    torrent = await pool.fetchrow(
-        """select * from rss_item where website = $1 and guid = $2""",
-        website,
-        guid,
-    )
+    app = fastapi.FastAPI(debug=cfg.debug, lifespan=lifespan)
 
-    return render(
-        "rss-item.html.j2",
-        ctx={"torrent": torrent},
-    )
+    @app.get("/")
+    async def index(render: Render) -> HTMLResponse:
+        torrents = await pool.fetch(
+            """select * from rss_item where status != $1 order by updated_at desc""",
+            RSS_ITEM_STATUS_SKIPPED,
+        )
+
+        return render(
+            "index.html.j2",
+            ctx={"torrents": torrents},
+        )
+
+    @app.get("/{website}/{guid}")
+    async def rss_item(website: str, guid: str, render: Render) -> HTMLResponse:
+        torrent = await pool.fetchrow(
+            """select * from rss_item where website = $1 and guid = $2""",
+            website,
+            guid,
+        )
+
+        return render(
+            "rss-item.html.j2",
+            ctx={"torrent": torrent},
+        )
+
+    return app
