@@ -7,7 +7,7 @@ from pt_repost.server import create_app
 
 
 @click.group()
-def cli(): ...
+def cli() -> None: ...
 
 
 @cli.command()

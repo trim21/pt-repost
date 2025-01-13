@@ -144,11 +144,11 @@ class SSD(Website):
         options: dict[str, Any],
         info: FullSubjectInfo,
     ) -> bytes:
-        sub_title = " / ".join(dedupe([t for t in info.names if t]))
+        sub_title = dedupe([t for t in info.names if t])
 
         data: dict[str, Any] = options | {
             "name": release_name.replace(" ", "."),
-            "small_descr": sub_title,
+            "small_descr": " / ".join(sub_title),
             "url": (
                 f"https://movie.douban.com/subject/{info.douban_id}/"
                 if info.douban_id

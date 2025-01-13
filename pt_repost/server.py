@@ -30,33 +30,7 @@ class _Render(Protocol):
     ) -> HTMLResponse: ...
 
 
-templates = Jinja2Templates(directory=str(Path(__file__).parent.joinpath("templates").resolve()))
-
-
-async def __render(request: Request) -> _Render:
-    def render(
-        name: str,
-        ctx: dict[str, Any] | None = None,
-        status_code: int = 200,
-        headers: Mapping[str, str] | None = None,
-        media_type: str | None = None,
-    ) -> HTMLResponse:
-        return templates.TemplateResponse(
-            name=name,
-            request=request,
-            context=ctx,
-            status_code=status_code,
-            headers=headers,
-            media_type=media_type,
-        )
-
-    return render
-
-
-Render = Annotated[_Render, Depends(__render)]
-
-
-def create_app(config_file):
+def create_app(config_file: str | None) -> fastapi.FastAPI:
     cfg = load_config(config_file)
 
     pool = asyncpg.create_pool(cfg.pg_dsn())
@@ -68,6 +42,31 @@ def create_app(config_file):
         await pool.close()
 
     app = fastapi.FastAPI(debug=cfg.debug, lifespan=lifespan)
+
+    templates = Jinja2Templates(
+        directory=str(Path(__file__).parent.joinpath("templates").resolve())
+    )
+
+    async def __render(request: Request) -> _Render:
+        def render(
+            name: str,
+            ctx: dict[str, Any] | None = None,
+            status_code: int = 200,
+            headers: Mapping[str, str] | None = None,
+            media_type: str | None = None,
+        ) -> HTMLResponse:
+            return templates.TemplateResponse(
+                name=name,
+                request=request,
+                context=ctx,
+                status_code=status_code,
+                headers=headers,
+                media_type=media_type,
+            )
+
+        return render
+
+    Render = Annotated[_Render, Depends(__render)]
 
     @app.get("/")
     async def index(render: Render) -> HTMLResponse:
