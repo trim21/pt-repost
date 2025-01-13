@@ -1120,15 +1120,15 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "asyncpg" },
+    { name = "asyncpg", specifier = "==0.30.0" },
     { name = "bencode2", specifier = "~=0.3.15" },
     { name = "click", specifier = "~=8.1.7" },
     { name = "cryptography", specifier = "~=44.0" },
-    { name = "durationpy" },
-    { name = "fastapi" },
+    { name = "durationpy", specifier = "==0.9" },
+    { name = "fastapi", specifier = "==0.115.6" },
     { name = "guessit", specifier = "~=3.8" },
     { name = "httpx", specifier = "~=0.28.0" },
-    { name = "jinja2" },
+    { name = "jinja2", specifier = "==3.1.5" },
     { name = "orjson", specifier = "~=3.10" },
     { name = "pillow", specifier = "~=11.0" },
     { name = "psycopg", extras = ["binary", "pool"], specifier = "~=3.2.3" },
@@ -1141,7 +1141,7 @@ requires-dist = [
     { name = "sslog", specifier = "==0.0.0a51" },
     { name = "tomli", specifier = "~=2.1.0" },
     { name = "uuid-utils", specifier = "~=0.10" },
-    { name = "uvicorn" },
+    { name = "uvicorn", specifier = "==0.34.0" },
     { name = "xxhash", specifier = "~=3.5" },
     { name = "yarl", specifier = "~=1.18" },
 ]

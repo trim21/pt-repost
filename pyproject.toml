@@ -28,11 +28,11 @@ dependencies = [
     'regex~=2024.11',
     'rapidocr_onnxruntime~=1.4', # 识别硬字幕
     'pillow~=11.0',
-    'durationpy',
-    'fastapi',
-    'uvicorn',
-    'asyncpg',
-    'jinja2'
+    'durationpy==0.9',
+    'fastapi==0.115.6',
+    'uvicorn==0.34.0',
+    'asyncpg==0.30.0',
+    'jinja2==3.1.5'
 ]
 
 [dependency-groups]
