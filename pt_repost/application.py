@@ -797,7 +797,7 @@ class Application:
             headers={
                 "X-API-Key": self.config.images.cmct_api_token,
             },
-            files={"source": ("pt-repost-" + str(uuid.uuid4()) + file.suffix, image_content)},
+            files={"source": (file.name, image_content)},
             data={"format": "json"},
         )
 
