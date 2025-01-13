@@ -25,16 +25,21 @@ services:
     networks: [pt-repost]
     command:
       - daemon
+      - --config-file=/etc/pt-repost/config.toml
     # 必需要把qb的下载路径mount进去
     volumes:
       - /srv/:/srv/
+      - ./config.toml:/etc/pt-repost/config.toml
   pt-repost-ui:
     image: ...
     networks: [pt-repost]
     command:
       - server
+      - --config-file=/etc/pt-repost/config.toml
       - --port=8080
       - --host=0.0.0.0
     ports:
       - '8080:8080'
+    volumes:
+      - ./config.toml:/etc/pt-repost/config.toml
 ```
