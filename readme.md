@@ -21,7 +21,7 @@ services:
     volumes:
       - ./data/pg:/var/lib/postgresql/data
   pt-repost-daemon:
-    image: ...
+    image: 'ghcr.io/trim21/pt-repost:daemon'
     networks: [pt-repost]
     command:
       - daemon
@@ -31,7 +31,7 @@ services:
       - /srv/:/srv/
       - ./config.toml:/etc/pt-repost/config.toml
   pt-repost-ui:
-    image: ...
+    image: 'ghcr.io/trim21/pt-repost:daemon'
     networks: [pt-repost]
     command:
       - server
