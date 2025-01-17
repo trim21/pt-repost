@@ -190,29 +190,25 @@ class SSD(Website):
         if 99 in info.genre_ids:
             data["type"] = "503"
 
-        cookie = SimpleCookie()
-        cookie.load(self.cfg.website.ssd.cookies)
+        cookies = None
+        headers = {
+            "user-agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+            )
+        }
+        if self.cfg.website.ssd.api_token:
+            headers["X-API-Key"] = self.cfg.website.ssd.api_token
+        else:
+            cookie = SimpleCookie()
+            cookie.load(self.cfg.website.ssd.cookies)
+            cookies = {k: v.value for k, v in cookie.items()}
 
-        with httpx.Client(
-            headers={
-                "user-agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-                )
-            },
-            cookies={k: v.value for k, v in cookie.items()},
-        ) as client:
+        with httpx.Client(headers=headers, cookies=cookies) as client:
             res = client.post(
                 "https://springsunday.net/takeupload.php",
                 files={"file": ("a.torrent", torrent)},
                 data=data,
-                headers={
-                    "user-agent": (
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                        + "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-                    )
-                },
-                cookies={k: v.value for k, v in cookie.items()},
             )
 
             if not res.is_redirect:

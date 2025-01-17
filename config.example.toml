@@ -75,5 +75,9 @@ excludes = [
 cmct_api_token = '...'
 
 [website.ssd]
-cookies = '...'
 passkey = '...'
+
+# 比如设置 cookies 或者 api-token
+# 如果两个都设置了，会优先使用 api token
+api-token = '...'
+cookies = '...'

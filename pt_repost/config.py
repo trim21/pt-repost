@@ -17,6 +17,14 @@ from pydantic import BeforeValidator, ByteSize, Field, HttpUrl, TypeAdapter
 class SSD:
     passkey: str
     cookies: str = ""
+    api_token: str = ""
+
+    def __post_init__(self):
+        if self.api_token:
+            return
+        if self.cookies:
+            return
+        raise ValueError("must set ssd api-token or cookies")
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
