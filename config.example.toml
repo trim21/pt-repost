@@ -44,6 +44,9 @@ excludes = [
 
 [[rss]]
 url = "..."
+# 抓取的时间间隔，默认30分钟
+# 支持的格式参照 https://pkg.go.dev/time#example-ParseDuration
+interval = "30m"
 
 # 禁转的 rss 链接，可以留空
 # exclude_url = "..."
