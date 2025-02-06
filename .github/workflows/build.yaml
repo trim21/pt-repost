@@ -76,8 +76,8 @@ jobs:
           docker manifest create \
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon \
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }} \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}-X64 \
-            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}-ARM64 \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}-X64 \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}-ARM64 \
 
       - name: docker push
         run: |
