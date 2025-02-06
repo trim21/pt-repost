@@ -5,6 +5,7 @@
     "local>trim21/renovate-config:monthly"
   ],
   "lockFileMaintenance": {
+    "semanticCommitType": "build",
     "enabled": true
   },
   "packageRules": [
