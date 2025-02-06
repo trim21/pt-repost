@@ -12,6 +12,10 @@ on:
     branches:
       - daemon
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   docker:
     runs-on: "${{ matrix.os }}"
@@ -19,9 +23,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-24.04-arm, ubuntu-24.04]
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref_name }}
-      cancel-in-progress: true
     permissions:
       packages: write
     steps:
