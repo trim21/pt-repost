@@ -154,10 +154,9 @@ def generate_images(
                     human_readable_size(raw_image_file.lstat().st_size),
                 )
 
-                file = raw_image_file.with_name(f"{i}.{j}.{image_format}")
-
-                if oxipng_executable is not None:
-                    logger.info("try lossless compression")
+                if oxipng_executable:
+                    file = raw_image_file.with_name(f"{i}.{j}.{image_format}")
+                    logger.info("try lossless compression with oxipng")
                     file.write_bytes(raw_image_file.read_bytes())
                     run_command(
                         [
@@ -175,11 +174,11 @@ def generate_images(
 
                     logger.info("result {}", human_readable_size(file.lstat().st_size))
 
-                if file.lstat().st_size >= IMAGE_SIZE_LIMIT:
-                    logger.warning(
-                        "png is still too large {}",
-                        human_readable_size(file.lstat().st_size),
-                    )
+                    if file.lstat().st_size >= IMAGE_SIZE_LIMIT:
+                        logger.warning(
+                            "png is still too large {}",
+                            human_readable_size(file.lstat().st_size),
+                        )
 
             total += 1
             logger.info("currently generate {} screenshot, {} is ok", total, i + 1)
@@ -188,7 +187,7 @@ def generate_images(
                 size_limit_count += 1
                 logger.warning("image too large {}", human_readable_size(size))
                 if size_limit_count >= 5:
-                    raise Exception("无法生成截图，截图太大嘞: " + human_readable_size(size))
+                    raise Exception("尝试多次也无法生成符合大小的截图")
                 continue
 
             results.append(file)
