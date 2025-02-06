@@ -53,7 +53,7 @@ from pt_repost.db import Database
 from pt_repost.douban import DoubanSubject
 from pt_repost.hardcode_subtitle import check_hardcode_chinese_subtitle
 from pt_repost.mediainfo import extract_mediainfo_from_file, parse_mediainfo_json
-from pt_repost.patterns import pattern_web_dl
+from pt_repost.patterns import pattern_2160p, pattern_dovi, pattern_web_dl
 from pt_repost.tmdb import (
     FullSubjectInfo,
     TMDBMovieDetail,
@@ -326,7 +326,11 @@ class Application:
             self.db.execute("delete from image where info_hash = $1", [t.hash])
             with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
                 image_format = "png"
-                if pattern_web_dl.search(title):
+                if (
+                    pattern_web_dl.search(title)
+                    and pattern_dovi.search(title)
+                    and pattern_2160p.search(title)
+                ):
                     image_format = "jpg"
 
                 image_files = list(
@@ -799,7 +803,7 @@ class Application:
             headers={
                 "X-API-Key": self.config.images.cmct_api_token,
             },
-            proxy=self.config.http_proxy,
+            proxy=self.config.http_proxy or None,
             files={"source": (file.name, image_content)},
             data={"format": "json"},
         )
@@ -824,7 +828,7 @@ class Application:
             human_readable_size(len(image_content)),
         )
 
-        with httpx.Client(proxy=self.config.http_proxy) as http_client:
+        with httpx.Client(proxy=self.config.http_proxy or None) as http_client:
             r = http_client.post(
                 "https://api.pixhost.to/images",
                 headers={"accept": "application/json"},
@@ -971,7 +975,7 @@ class Application:
 
         tc = httpx.get(
             pick.link,
-            proxy=self.config.http_proxy,
+            proxy=self.config.http_proxy or None,
             headers=DEFAULT_HEADERS,
             timeout=30,
             follow_redirects=True,
@@ -1118,7 +1122,7 @@ class Application:
             if self.config.debug:
                 debug_rss_url.write_text(rss_text, encoding="utf-8")
         else:
-            res = httpx.get(url, timeout=30, proxy=self.config.http_proxy)
+            res = httpx.get(url, timeout=30, proxy=self.config.http_proxy or None)
             rss_text = res.text
 
         self.process_rss(

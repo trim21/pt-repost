@@ -81,7 +81,10 @@ class Config:
     website: Website
     rss: Annotated[list[Rss], Field(default_factory=list)]
 
-    http_proxy: str | None = None
+    http_proxy: Annotated[
+        str | None,
+        BeforeValidator(lambda x: x or None),  # filter empty string
+    ] = None
 
     max_processing_size: Annotated[ByteSize, Field("100GiB", alias="max-processing-size")]
     max_single_torrent_size: Annotated[ByteSize, Field("100GiB", alias="max-single-torrent-size")]
