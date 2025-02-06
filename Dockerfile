@@ -1,3 +1,8 @@
+FROM rust:1-bullseye as rust-build
+
+RUN cargo binstall cargo-binstall && \
+    cargo binstall oxipng
+
 FROM ghcr.io/astral-sh/uv:debian-slim AS build
 
 WORKDIR /app
@@ -12,6 +17,10 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     mediainfo &&\
     rm -rf /var/lib/apt/lists/*
+
+COPY --from=rust-build /root/.local/oxipng /usr/local/bin/oxipng
+
+RUN oxipng --help
 
 WORKDIR /app
 
