@@ -8,6 +8,9 @@
     "master",
     "daemon"
   ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
   "git-submodules": {
     "enabled": true
   }
