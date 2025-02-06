@@ -44,6 +44,7 @@ jobs:
         with:
           images: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}"
           tags: |
+            type=ref,event=branch,suffix=-${{ runner.arch }}
             type=ref,event=branch,suffix=-{{ sha }}-${{ runner.arch }}
 
       - name: Build and push
