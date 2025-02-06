@@ -68,7 +68,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: prune docker cache
-        run: docker buildx prune --filter=24h --all
+        run: docker buildx prune --filter=until=24h --all
 
   merge:
     if: ${{ github.event_name == 'push' }}
