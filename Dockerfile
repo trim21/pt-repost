@@ -17,11 +17,6 @@ RUN apt-get update && apt-get install -y \
     mediainfo &&\
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
-
-# check oxipng is working
-RUN oxipng --version
-
 WORKDIR /app
 
 COPY --from=build /app/requirements.txt .
@@ -29,6 +24,10 @@ COPY --from=build /app/requirements.txt .
 ENV PIP_ROOT_USER_ACTION=ignore
 
 RUN pip install --only-binary=:all: --no-cache -r requirements.txt
+
+COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
+# check oxipng is working
+RUN oxipng --version
 
 COPY . .
 
