@@ -14,7 +14,7 @@ dependencies = [
     'rich~=13.9',
     'cryptography~=44.0',
     'xxhash~=3.5',
-    'qbittorrent-api==2024.11.70',
+    'qbittorrent-api==2024.12.71',
     'click~=8.1.7',
     'sslog==0.0.0a51',
     'pydantic==2.10.6',
