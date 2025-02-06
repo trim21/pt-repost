@@ -4,6 +4,10 @@
     "local>trim21/renovate-config",
     "local>trim21/renovate-config:monthly"
   ],
+  "baseBranches": [
+    "master",
+    "daemon"
+  ],
   "git-submodules": {
     "enabled": true
   }
