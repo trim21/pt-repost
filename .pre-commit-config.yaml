@@ -3,6 +3,7 @@ repos:
     # uv version.
     rev: 0.5.29
     hooks:
+      - id: uv-lock
       - id: uv-export
         files: '^(uv\.lock|requirements\.prod\.txt)$'
         args:
