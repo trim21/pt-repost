@@ -15,7 +15,7 @@ dependencies = [
     'xxhash==3.5.0',
     'qbittorrent-api==2024.12.71',
     'click==8.1.8',
-    'sslog==0.0.0a51',
+    'sslog==0.0.0a52',
     'pydantic==2.10.6',
     'httpx==0.28.1',
     'bencode2==0.3.21',
