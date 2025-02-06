@@ -1,6 +1,6 @@
 FROM rust:1-bullseye as rust-build
 
-RUN cargo binstall cargo-binstall && \
+RUN cargo install cargo-binstall && \
     cargo binstall oxipng
 
 FROM ghcr.io/astral-sh/uv:debian-slim AS build
