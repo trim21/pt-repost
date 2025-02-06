@@ -1,17 +1,15 @@
 import dataclasses
 import json
 import subprocess
-import sys
 import tempfile
 from pathlib import Path
-from shutil import which
 from typing import Annotated, List, Optional
 
 import orjson
 from pydantic import Field
 from sslog import logger
 
-from pt_repost.utils import parse_obj_as, run_command
+from pt_repost.utils import must_find_executable, must_run_command, parse_obj_as
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
@@ -67,23 +65,24 @@ def parse_mediainfo_json(s: str) -> MediaInfo:
     return parse_obj_as(MediaInfo, {"video": videos, "audio": audio, "text": text})
 
 
-def extract_mediainfo_from_file(file: Path) -> tuple[str, str]:
-    mediainfo = which("mediainfo")
-    if not mediainfo:
-        logger.fatal("failed to find mediainfo")
-        sys.exit(1)
+mediainfo = must_find_executable("mediainfo")
+logger.info("using mediainfo at {!r}", mediainfo)
 
+
+def extract_mediainfo_from_file(file: Path) -> tuple[str, str]:
     with tempfile.TemporaryDirectory(prefix="pt-repost-") as tempdir:
         out_file = Path(tempdir, "mediainfo.txt")
-        run_command(
-            [mediainfo, f"--LogFile={out_file}", file.name],
+        must_run_command(
+            mediainfo,
+            [f"--LogFile={out_file}", file.name],
             cwd=str(file.parent),
             stdout=subprocess.DEVNULL,
         )
 
         json_file = Path(tempdir, "mediainfo.json")
-        run_command(
-            [mediainfo, f"--LogFile={json_file}", "--output=JSON", file.name],
+        must_run_command(
+            mediainfo,
+            [f"--LogFile={json_file}", "--output=JSON", file.name],
             cwd=str(file.parent),
             stdout=subprocess.DEVNULL,
         )

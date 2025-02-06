@@ -82,11 +82,12 @@ pngquant_executable = which("pngquant")
 def must_find_executable(e: str) -> str:
     tool = which(e)
     if tool is None:
-        raise Exception("can't find ffmpeg")
+        raise Exception("can't find {e}")
     return tool
 
 
 ffmpeg: str = must_find_executable("ffmpeg")
+logger.info("using ffmpeg at {}", ffmpeg)
 
 
 def generate_images(
