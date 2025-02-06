@@ -105,7 +105,7 @@ class Config:
     pg_user: str | None = None
     pg_password: str | None = None
 
-    data_dir: Annotated[pathlib.Path, Field(alias="data-dir")]
+    data_dir: Annotated[pathlib.Path, Field("", alias="data-dir")]
     tmdb_api_token: Annotated[str, Field(alias="tmdb-api-token")]
     db_path: Path = Path(os.getcwd(), "data.db")
     qb_url: Annotated[HttpUrl, Field(alias="qb-url")]
@@ -115,15 +115,6 @@ class Config:
     excludes: Annotated[list[re.Pattern[str]], Field(default_factory=list)]
 
     def pg_dsn(self) -> str:
-        _ssl_root_cert = self.data_dir.joinpath("pt-repost-ca.crt")
-        _ssl_cert = self.data_dir.joinpath("client.crt")
-        ssl_key = self.data_dir.joinpath("client.key")
-
-        # TODO: generate client key from ca
-
-        if ssl_key.exists():
-            os.chmod(ssl_key, 0o0600)
-
         return str(
             yarl.URL.build(
                 scheme="postgresql",
@@ -131,12 +122,6 @@ class Config:
                 password=self.pg_password,
                 host=self.pg_host,
                 port=self.pg_port,
-                # query={
-                #     "sslmode": "verify-ca",
-                #     "sslrootcert": str(ssl_root_cert),
-                #     "sslcert": str(ssl_cert),
-                #     "sslkey": str(ssl_key),
-                # },
             )
         )
 
