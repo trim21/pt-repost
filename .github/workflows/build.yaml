@@ -18,11 +18,11 @@ concurrency:
 
 jobs:
   docker:
-    runs-on: "ubuntu-24.04"
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     os: [ubuntu-24.04-arm, ubuntu-24.04]
+    runs-on: "${{ matrix.os }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04-arm, ubuntu-24.04]
     permissions:
       packages: write
     steps:
@@ -44,8 +44,7 @@ jobs:
         with:
           images: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}"
           tags: |
-            type=ref,event=branch
-            type=ref,event=branch,suffix=-{{ sha }}
+            type=ref,event=branch,suffix=-${{ github.sha }}-${{ runner.arch }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
@@ -53,9 +52,30 @@ jobs:
           context: .
           push: ${{ github.event_name == 'push' }}
           provenance: false
-          platforms: 'linux/amd64'
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           github-token: ${{ github.token }}
+
+  merge:
+    if: ${{ github.event_name == 'push' }}
+    needs:
+      - docker
+    runs-on: "ubuntu-24.04"
+
+    steps:
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Create SHA manifest and push
+        run: |
+          docker manifest create \
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon \
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }} \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}-x64 \
+            --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ github.sha }}-ARM64 \
+          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}
