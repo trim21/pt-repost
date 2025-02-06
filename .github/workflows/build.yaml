@@ -67,8 +67,12 @@ jobs:
           cache-to: type=local,dest=./cache/docker
           github-token: ${{ github.token }}
 
+      - run: tree ./cache/docker
+
       - name: prune docker cache
         run: docker buildx prune --filter=until=24h --all
+
+      - run: tree ./cache/docker
 
   merge:
     if: ${{ github.event_name == 'push' }}
