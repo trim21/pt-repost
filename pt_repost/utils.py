@@ -76,7 +76,6 @@ IMAGE_SIZE_LIMIT = 15 * 1024 * 1024
 
 
 oxipng_executable = which("oxipng")
-pngquant_executable = which("pngquant")
 
 
 def must_find_executable(e: str) -> str:
@@ -139,7 +138,7 @@ def generate_images(
                     str(raw_image_file),
                 ],
                 stdout=subprocess.DEVNULL,
-                # stderr=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
                 check=True,
             )
 
@@ -171,6 +170,7 @@ def generate_images(
                             str(file),
                         ],
                         stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
                     )
 
                     logger.info("result {}", human_readable_size(file.lstat().st_size))
@@ -180,24 +180,6 @@ def generate_images(
                         "png is still too large {}",
                         human_readable_size(file.lstat().st_size),
                     )
-                    if pngquant_executable is not None:
-                        logger.info("try non-lossless compression")
-                        file.unlink(missing_ok=True)
-                        run_command(
-                            [
-                                pngquant_executable,
-                                "-f",
-                                "--skip-if-larger",
-                                "--quality=90-100",
-                                "--strip",
-                                "--output",
-                                str(file),
-                                "--",
-                                str(raw_image_file),
-                            ],
-                            stdout=subprocess.DEVNULL,
-                        )
-                        logger.info("result {}", human_readable_size(file.lstat().st_size))
 
             total += 1
             logger.info("currently generate {} screenshot, {} is ok", total, i + 1)
