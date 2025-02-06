@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y \
 
 COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
 
-RUN oxipng --help
+# check oxipng is working
+RUN oxipng --version
 
 WORKDIR /app
 
