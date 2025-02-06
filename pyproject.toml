@@ -26,7 +26,7 @@ dependencies = [
     'six~=1.17',
     'psycopg[binary,pool]~=3.2.3',
     'regex~=2024.11',
-    'rapidocr_onnxruntime~=1.4', # 识别硬字幕
+    'rapidocr-onnxruntime~=1.4', # 识别硬字幕
     'pillow~=11.0',
     'durationpy==0.9',
     'fastapi==0.115.6',
