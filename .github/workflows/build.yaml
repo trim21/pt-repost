@@ -46,6 +46,15 @@ jobs:
           tags: |
             type=ref,event=branch,suffix=-${{ github.sha }}-${{ runner.arch }}
 
+      - name: Cache Primes
+        id: cache-primes
+        uses: actions/cache@v4
+        with:
+          path: /cache/docker
+          key: docker-daemon-${{ runner.arch }}-${{ github.sha }}
+          restore-keys: |
+            docker-daemon-${{ runner.arch }}
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -54,8 +63,10 @@ jobs:
           provenance: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=local,src=/cache/docker
+          cache-to: type=local,src=/cache/docker
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
           github-token: ${{ github.token }}
 
   merge:
@@ -74,11 +85,17 @@ jobs:
       - name: Create SHA manifest and push
         run: |
           docker manifest create \
-            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon \
             ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }} \
             --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}-X64 \
             --amend ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}-ARM64 \
 
+      - name: alias
+        run: |
+          docker manifest create ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon \
+          ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}
+
+
       - name: docker push
         run: |
-          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}
+          docker manifest push ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon \
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:daemon-${{ github.sha }}
