@@ -6,5 +6,13 @@
   ],
   "lockFileMaintenance": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "python"
+      ],
+      "enabled": false
+    }
+  ]
 }
