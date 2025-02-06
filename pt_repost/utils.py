@@ -71,8 +71,8 @@ def get_video_duration(video_file: Path) -> int:
     return int(json.loads(probe["format"]["duration"]))
 
 
-# 10mb
-IMAGE_SIZE_LIMIT = 10 * 1024 * 1024
+# 15mb
+IMAGE_SIZE_LIMIT = 15 * 1024 * 1024
 
 
 oxipng_executable = which("oxipng")
@@ -111,6 +111,7 @@ def generate_images(
     total = 0
 
     for i in range(count):
+        size_limit_count = 0
         seek = start + step * i - 5
         j = -1
         while True:
@@ -201,7 +202,10 @@ def generate_images(
             logger.info("currently generate {} screenshot, {} is ok", total, i + 1)
             size = file.lstat().st_size
             if size >= IMAGE_SIZE_LIMIT:
+                size_limit_count += 1
                 logger.warning("image too large {}", human_readable_size(size))
+                if size_limit_count >= 5:
+                    raise Exception("无法生成截图，截图太大嘞: " + human_readable_size(size))
                 continue
 
             results.append(file)
