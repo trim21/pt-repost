@@ -82,8 +82,8 @@ jobs:
             --amend ${{ env.IMAGE }}:daemon-${{ github.sha }}-X64 \
             --amend ${{ env.IMAGE }}:daemon-${{ github.sha }}-ARM64 \
 
-      # - name: push tag
-        # run: docker manifest push ${{ env.IMAGE }}:daemon-${{ github.sha }}
+      - name: push sha image
+        run: docker manifest push ${{ env.IMAGE }}:daemon-${{ github.sha }}
 
       - name: Create branch manifest and push
         run: |
@@ -91,3 +91,6 @@ jobs:
             ${{ env.IMAGE }}:daemon \
             --amend ${{ env.IMAGE }}:daemon-${{ github.sha }}-X64 \
             --amend ${{ env.IMAGE }}:daemon-${{ github.sha }}-ARM64 \
+
+      - name: push branch image
+        run: docker manifest push ${{ env.IMAGE }}:daemon
