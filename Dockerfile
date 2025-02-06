@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     mediainfo &&\
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=rust-build /root/.local/oxipng /usr/local/bin/oxipng
+COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
 
 RUN oxipng --help
 
