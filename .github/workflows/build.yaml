@@ -40,12 +40,22 @@ jobs:
 
       - name: Docker metadata
         id: meta
+        if: ${{  runner.arch == 'x64' }}
         uses: docker/metadata-action@v5
         with:
           images: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}"
           tags: |
-            type=ref,event=branch,suffix=-${{ runner.arch }}
-            type=ref,event=branch,suffix=-{{ sha }}-${{ runner.arch }}
+            type=ref,event=branch,suffix=-{{ sha }}
+
+      - name: Docker metadata
+        id: meta
+        if: ${{  runner.arch == 'ARM64' }}
+        uses: docker/metadata-action@v5
+        with:
+          images: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}"
+          tags: |
+            type=ref,event=branch,suffix=-arm64
+            type=ref,event=branch,suffix=-{{ sha }}-arm64
 
       - name: Build and push
         uses: docker/build-push-action@v6
