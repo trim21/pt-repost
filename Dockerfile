@@ -1,4 +1,4 @@
-FROM rust:1-bullseye as rust-build
+FROM rust:1-bullseye AS rust-build
 
 RUN cargo install cargo-binstall && \
     cargo binstall oxipng
