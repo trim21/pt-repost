@@ -43,3 +43,6 @@ services:
     volumes:
       - ./config.toml:/etc/pt-repost/config.toml
 ```
+
+
+daemon 可以在多节点上运行，需要使用 tailscale 等工具组网。
