@@ -1,4 +1,16 @@
 repos:
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    # uv version.
+    rev: 0.5.29
+    hooks:
+      - id: uv-export
+        files: '^(uv\.lock|requirements\.prod\.txt)$'
+        args:
+          - "--frozen"
+          - "--no-group=dev"
+          - "--no-emit-project"
+          - "--output-file=requirements.prod.txt"
+
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -25,6 +37,6 @@ repos:
         args: [--fix, --fixable=ALL]
 
   - repo: https://github.com/psf/black
-    rev: '25.1.0'
+    rev: "25.1.0"
     hooks:
       - id: black
