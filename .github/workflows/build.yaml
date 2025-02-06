@@ -91,8 +91,4 @@ jobs:
             --amend ${{ env.IMAGE }}:daemon-${{ github.sha }}-X64 \
             --amend ${{ env.IMAGE }}:daemon-${{ github.sha }}-ARM64 \
 
-      - run: docker manifest push ${{ env.IMAGE }}:daemon-${{ github.sha }}
-
       - run: docker manifest create ${{ env.IMAGE }}:daemon ${{ env.IMAGE }}:daemon-${{ github.sha }}
-
-      - run: docker manifest push ${{ env.IMAGE }}:daemon
