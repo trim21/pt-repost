@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - master
+      - daemon
   pull_request:
     branches:
       - master
+      - daemon
 
 jobs:
   mypy:
