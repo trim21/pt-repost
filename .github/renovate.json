@@ -9,6 +9,9 @@
     "semanticCommitType": "build",
     "enabled": true
   },
+  "pip_requirements": {
+    "enabled": false
+  },
   "packageRules": [
     {
       "matchPackageNames": [
