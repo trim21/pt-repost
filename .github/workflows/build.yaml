@@ -44,19 +44,14 @@ jobs:
         with:
           images: "ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}"
           tags: |
-            type=ref,event=branch
-            type=ref,event=branch,suffix=-{{ sha }}
-
-            type=raw,value=${{ env.SHA }}
+            type=ref,event=branch,suffix=-{{ sha }}-${{ runner.arch }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name == 'push' }}
-          # provenance: false
-          # platforms: linux/amd64,linux/arm64
-          platforms: linux/${{ runner.arch == 'x64' && 'amd64' || 'arm64' }}
+          provenance: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
