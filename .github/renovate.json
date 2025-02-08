@@ -3,21 +3,10 @@
   "extends": [
     "local>trim21/renovate-config",
     "local>trim21/renovate-config:app",
+    "local>trim21/renovate-config:python",
     "local>trim21/renovate-config:monthly"
   ],
-  "lockFileMaintenance": {
-    "semanticCommitType": "build",
-    "enabled": true
-  },
   "pip_requirements": {
     "enabled": false
-  },
-  "packageRules": [
-    {
-      "matchPackageNames": [
-        "python"
-      ],
-      "enabled": false
-    }
-  ]
+  }
 }
