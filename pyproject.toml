@@ -5,7 +5,7 @@ build-backend = "flit_core.buildapi"
 [project]
 name = 'pt-repost'
 version = '0'
-requires-python = '~=3.10'
+requires-python = '~=3.10.0'
 description = ''
 dependencies = [
     'orjson==3.10.15',
