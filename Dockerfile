@@ -1,8 +1,8 @@
-FROM rust:1-bullseye AS rust-build
+FROM rust:1-bullseye@sha256:1e3f7a9fd1f278cc4be02a830745f40fe4b22f0114b2464a452c50273cc1020d AS rust-build
 
 RUN cargo install oxipng
 
-FROM ghcr.io/astral-sh/uv:debian-slim AS build
+FROM ghcr.io/astral-sh/uv:debian-slim@sha256:3ac4e2ef46fd5a0fb0cf5af9a421435513fec1b2a66e1379a7981dc03470fd33 AS build
 
 WORKDIR /app
 
