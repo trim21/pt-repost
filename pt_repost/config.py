@@ -8,9 +8,13 @@ from pathlib import Path
 from typing import Annotated
 
 import durationpy
+import orjson
 import tomli
+import yaml
 import yarl
-from pydantic import BeforeValidator, ByteSize, Field, HttpUrl, TypeAdapter
+from pydantic import BeforeValidator, ByteSize, Field, HttpUrl
+
+from pt_repost.utils import parse_obj_as
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
@@ -133,7 +137,14 @@ def load_config(config_file: str | Path | None = None) -> Config:
         print("please put a config.toml at {}".format(p))
         sys.exit(1)
 
-    config: Config = TypeAdapter(Config).validate_python(tomli.loads(p.read_text()))
+    if p.suffix.lower() == ".yaml":
+        config = parse_obj_as(Config, yaml.safe_load(p.read_text(encoding="utf-8")))
+    elif p.suffix.lower() == ".toml":
+        config = parse_obj_as(Config, tomli.loads(p.read_text(encoding="utf-8")))
+    elif p.suffix.lower() == ".json":
+        config = parse_obj_as(Config, orjson.loads(p.read_bytes()))
+    else:
+        raise Exception("not supported config format, only support yaml/toml/json")
 
     data_dir = config.data_dir.expanduser()
 
