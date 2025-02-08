@@ -803,6 +803,7 @@ class Application:
             headers={
                 "X-API-Key": self.config.images.cmct_api_token,
             },
+            timeout=120,
             proxy=self.config.http_proxy or None,
             files={"source": (file.name, image_content)},
             data={"format": "json"},
