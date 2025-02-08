@@ -18,12 +18,11 @@ concurrency:
 
 jobs:
   docker:
-    if: '${{ false }}'
     runs-on: "${{ matrix.os }}"
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04-arm, ubuntu-24.04]
+        os: [ubuntu-22.04-arm, ubuntu-24.04]
     permissions:
       packages: write
     steps:
@@ -61,7 +60,7 @@ jobs:
           github-token: ${{ github.token }}
 
   merge:
-    if: '${{ false }}'
+    if: "${{ github.event_name == 'push' }}"
     needs:
       - docker
     runs-on: "ubuntu-24.04"
