@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   docker:
+    if: '${{ false }}'
     runs-on: "${{ matrix.os }}"
     strategy:
       fail-fast: false
@@ -60,7 +61,7 @@ jobs:
           github-token: ${{ github.token }}
 
   merge:
-    if: ${{ github.event_name == 'push' }}
+    if: '${{ false }}'
     needs:
       - docker
     runs-on: "ubuntu-24.04"
