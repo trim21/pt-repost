@@ -12,23 +12,20 @@ RUN uv export --no-group dev --frozen --no-emit-project > /app/requirements.txt
 
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    mediainfo &&\
-    rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app
-
-COPY --from=build /app/requirements.txt .
-
 ENV PIP_ROOT_USER_ACTION=ignore
 
-RUN pip install --only-binary=:all: --no-cache -r requirements.txt
+ENTRYPOINT ["python", "main.py"]
+
+RUN apt-get update && apt-get install -y ffmpeg mediainfo &&\
+    rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
 
 COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
 # check oxipng is working
 RUN oxipng --version
 
-ENTRYPOINT ["python", "main.py"]
+COPY --from=build /app/requirements.txt .
+
+RUN pip install --only-binary=:all: --no-cache -r requirements.txt
 
 COPY . .
