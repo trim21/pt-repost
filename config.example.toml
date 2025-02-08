@@ -74,6 +74,15 @@ excludes = [
     '(?i)\b720p\b',
 ]
 
+# 多条 rss 在下面重复
+[[rss]]
+url = "..."
+interval = "..."
+website = "..."
+exclude_url = "..."
+includes = []
+excludes = []
+
 [images]
 cmct_api_token = '...'
 
