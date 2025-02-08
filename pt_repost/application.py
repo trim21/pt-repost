@@ -971,9 +971,6 @@ class Application:
             ],
         )
 
-        if 16 in meta_info.genre_ids:
-            raise Skip(pick.guid, pick.website, "动画")
-
         tc = httpx.get(
             pick.link,
             proxy=self.config.http_proxy or None,
