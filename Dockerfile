@@ -29,6 +29,6 @@ COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
 # check oxipng is working
 RUN oxipng --version
 
-COPY . .
-
 ENTRYPOINT ["python", "main.py"]
+
+COPY . .
