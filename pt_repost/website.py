@@ -6,6 +6,7 @@ from typing import Any
 import guessit
 import httpx
 import yarl
+from sslog import logger
 
 from pt_repost.config import Config
 from pt_repost.mediainfo import MediaInfo
@@ -61,24 +62,27 @@ class SSD(Website):
 
         options["medium_sel"] = medium_options.get(guess.get("source", "Other"), 99)
 
-        match m.video[0].width:
-            case 3840:  # 2160
+        match m.video[0].height:
+            case 2160:
                 options["standard_sel"] = 1
-            case 1920:  # 1080
+            case 1080:
                 if "1080i" in release_name.lower():
                     options["standard_sel"] = 3
                 else:
                     options["standard_sel"] = 2
+            case 720:
+                options["standard_sel"] = 4
             case _:
-                raise NotImplementedError()
+                options["standard_sel"] = 99
+                logger.warning(f"unknown resolution {m.video[0]!r}")
 
         match m.video[0].format:
             case "HEVC":
                 options["codec_sel"] = 1
             case "AVC":
                 options["codec_sel"] = 2
-            case _:
-                raise NotImplementedError()
+            case fmt:
+                raise NotImplementedError(f"implemented format {fmt}")
 
         audio_codec = {
             "DTS-HD": 1,
