@@ -11,7 +11,7 @@ dependencies = [
     'orjson==3.10.15',
     'uuid-utils==0.10.0',
     'rich==13.9.4',
-    'cryptography==44.0.0',
+    'cryptography==44.0.1',
     'xxhash==3.5.0',
     'qbittorrent-api==2024.12.71',
     'click==8.1.8',
