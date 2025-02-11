@@ -51,7 +51,11 @@ interval = "30m"
 # 禁转的 rss 链接，可以留空
 # exclude_url = "..."
 
+# 用于判断多条 rss 是否属于同一个网站。
+# 可以任意填写，但是需要保证同一个网站的所有 rss 均使用相同的值。
 website = "..."
+
+
 # 正则，每个组内的是 “且” 关系，不同的组之间是 “或” 关系。
 #
 # 比如，以下的例子会下载所有的 hhweb 的 netflix/amazon Web-DL 和所有的 cmct 的种子。
@@ -59,8 +63,6 @@ website = "..."
 #    [ '(?i)\bWEB-DL\b', '(?i)\b(netflix|amzn)\b','(?i)-hhweb$', ],
 #    [ '(?i)-cmct', ],
 #]
-
-
 includes = [
     [
         '(?i)\bWEB-DL\b',
