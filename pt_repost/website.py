@@ -82,7 +82,7 @@ class SSD(Website):
             case "AVC":
                 options["codec_sel"] = 2
             case fmt:
-                raise NotImplementedError(f"implemented format {fmt}")
+                raise NotImplementedError(f"not implemented format {fmt}")
 
         audio_codec = {
             "DTS-HD": 1,
