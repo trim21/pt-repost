@@ -17,6 +17,20 @@ from pydantic import TypeAdapter
 from sslog import logger
 
 
+def must_find_executable(e: str) -> str:
+    tool = which(e)
+    if tool is None:
+        raise Exception("can't find {e}")
+    return tool
+
+
+ffmpeg: str = must_find_executable("ffmpeg")
+logger.info("using ffmpeg at {}", ffmpeg)
+
+ffprobe: str = must_find_executable("ffprobe")
+logger.info("using ffprobe at {}", ffprobe)
+
+
 def run_command(
     command: list[str],
     cwd: str | Path | None = None,
@@ -45,7 +59,7 @@ def must_run_command(
 
 def get_video_duration(video_file: Path) -> int:
     p = must_run_command(
-        "ffprobe",
+        ffprobe,
         [
             "-v",
             "quiet",
@@ -76,17 +90,6 @@ IMAGE_SIZE_LIMIT = 15 * 1024 * 1024
 
 
 oxipng_executable = which("oxipng")
-
-
-def must_find_executable(e: str) -> str:
-    tool = which(e)
-    if tool is None:
-        raise Exception("can't find {e}")
-    return tool
-
-
-ffmpeg: str = must_find_executable("ffmpeg")
-logger.info("using ffmpeg at {}", ffmpeg)
 
 
 def generate_images(
