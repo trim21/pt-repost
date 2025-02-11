@@ -27,9 +27,9 @@ services:
       - daemon
       - --config-file=/etc/pt-repost/config.toml
     volumes:
-      # 必需要把qb的下载路径原样mount进去以
+      # 必需要把 qBittorrent 的下载路径原样 mount
       # 否则会出现找不到文件的错误
-      - /srv/:/srv/
+      - /downloads/:/downloads/
       - ./config.toml:/etc/pt-repost/config.toml
   pt-repost-ui:
     image: "ghcr.io/trim21/pt-repost:daemon"
