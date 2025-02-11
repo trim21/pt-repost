@@ -6,6 +6,7 @@ import functools
 import io
 import json
 import re
+import sys
 import tempfile
 import time
 import uuid
@@ -21,6 +22,7 @@ import guessit
 import httpx
 import orjson
 import qbittorrentapi
+import semver
 import xxhash
 import yarl
 from pydantic import Field
@@ -177,7 +179,7 @@ class Application:
             self.db.fetch_val("select version()")
         except Exception as e:
             print("failed to connect to database", e)
-            raise
+            sys.exit(1)
 
         print("successfully connect to database")
 
@@ -186,11 +188,15 @@ class Application:
             self.db.execute(sql_file.read_text(encoding="utf-8"))
 
         try:
-            self.qb.app_version()
+            version = semver.Version.parse(self.qb.app_version().removeprefix("v"))
         except Exception as e:
             print("failed to connect to qBittorrent", e)
-            raise
+            sys.exit(1)
+
         print("successfully connect to qBittorrent")
+        if version < semver.Version.parse("4.5.0"):
+            print("qb版本太旧，请升级到 >=4.5.0")
+            sys.exit(1)
 
     def start(self) -> None:
         for rss_id, rss in enumerate(self.config.rss):
