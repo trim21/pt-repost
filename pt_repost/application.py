@@ -21,8 +21,8 @@ import bencode2
 import guessit
 import httpx
 import orjson
+import packaging.version
 import qbittorrentapi
-import semver
 import xxhash
 import yarl
 from pydantic import Field
@@ -188,13 +188,13 @@ class Application:
             self.db.execute(sql_file.read_text(encoding="utf-8"))
 
         try:
-            version = semver.Version.parse(self.qb.app_version().removeprefix("v"))
+            version = packaging.version.parse(self.qb.app_version())
         except Exception as e:
             print("failed to connect to qBittorrent", e)
             sys.exit(1)
 
         print("successfully connect to qBittorrent")
-        if version < semver.Version.parse("4.5.0"):
+        if version < packaging.version.parse("v4.5.0"):
             print("qb版本太旧，请升级到 >=4.5.0")
             sys.exit(1)
 

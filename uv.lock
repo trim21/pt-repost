@@ -664,7 +664,6 @@ dependencies = [
     { name = "rapidocr-onnxruntime" },
     { name = "regex" },
     { name = "rich" },
-    { name = "semver" },
     { name = "six" },
     { name = "sslog" },
     { name = "tomli" },
@@ -703,7 +702,6 @@ requires-dist = [
     { name = "rapidocr-onnxruntime", specifier = "==1.4.4" },
     { name = "regex", specifier = "==2024.11.6" },
     { name = "rich", specifier = "==13.9.4" },
-    { name = "semver", specifier = "==3.0.4" },
     { name = "six", specifier = "==1.17.0" },
     { name = "sslog", specifier = "==0.0.0a52" },
     { name = "tomli", specifier = "==2.2.1" },
@@ -932,15 +930,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ab/3a/0316b28d0761c6734d6bc14e770d85506c986c85ffb239e688eeaab2c2bc/rich-13.9.4.tar.gz", hash = "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098", size = 223149 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl", hash = "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90", size = 242424 },
-]
-
-[[package]]
-name = "semver"
-version = "3.0.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/72/d1/d3159231aec234a59dd7d601e9dd9fe96f3afff15efd33c1070019b26132/semver-3.0.4.tar.gz", hash = "sha256:afc7d8c584a5ed0a11033af086e8af226a9c0b206f313e0301f8dd7b6b589602", size = 269730 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a6/24/4d91e05817e92e3a61c8a21e08fd0f390f5301f1c448b137c57c4bc6e543/semver-3.0.4-py3-none-any.whl", hash = "sha256:9c824d87ba7f7ab4a1890799cec8596f15c1241cb473404ea1cb0c55e4b04746", size = 17912 },
 ]
 
 [[package]]
