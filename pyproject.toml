@@ -37,7 +37,12 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ['types-regex==2024.11.6.20241221', 'types-six==1.17.0.20241205', 'mypy']
+dev = [
+    'types-regex==2024.11.6.20241221',
+    'types-six==1.17.0.20241205',
+    'types-PyYAML==6.0.12.20241230',
+    'mypy',
+]
 
 [project.scripts]
 pt-repost = 'pt_repost.main:main'

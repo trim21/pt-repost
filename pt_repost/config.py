@@ -5,7 +5,7 @@ import re
 import sys
 import uuid
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Any
 
 import durationpy
 import orjson
@@ -23,7 +23,7 @@ class SSD:
     cookies: str = ""
     api_token: str = ""
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.api_token:
             return
         if self.cookies:
@@ -43,18 +43,14 @@ class RSS:
     excludes: list[re.Pattern[str]] = dataclasses.field(default_factory=list)
 
 
-def _regex_ignore_case(s: str) -> re.Pattern[str]:
-    return re.compile(s, flags=re.IGNORECASE | re.UNICODE)
-
-
-def parse_go_duration_str(s: str) -> int:
+def parse_go_duration_str(s: Any) -> Any:
     if isinstance(s, float | int):
         return int(s)
 
-    if not isinstance(s, str):
-        raise ValueError("duration must be str/int/float")
+    if isinstance(s, str):
+        return int(durationpy.from_str(s).total_seconds())
 
-    return int(durationpy.from_str(s).total_seconds())
+    return s
 
 
 @dataclasses.dataclass(frozen=True, slots=True, kw_only=True)
@@ -94,7 +90,7 @@ class Config:
     max_single_torrent_size: Annotated[ByteSize, Field("100GiB", alias="max-single-torrent-size")]
     max_processing_per_node: Annotated[int, Field(100000, alias="max-processing-per-node")]
     recent_release_seconds: Annotated[
-        int, Field(3600, alias="recent-release"), BeforeValidator(parse_go_duration_str)
+        int, Field(0, alias="recent-release"), BeforeValidator(parse_go_duration_str)
     ]
 
     min_seeding_seconds: Annotated[

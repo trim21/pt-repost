@@ -1024,11 +1024,13 @@ class Application:
             if len(current_processing) >= self.config.max_processing_per_node:
                 return []
 
-            released_after = datetime.fromtimestamp(
-                time.time() - self.config.recent_release_seconds, tz=timezone.utc
-            ).astimezone()
-
-            logger.info("pick release data after {}", released_after.replace(microsecond=0))
+            if self.config.recent_release_seconds <= 0:
+                released_after = datetime.fromtimestamp(0, tz=timezone.utc)
+            else:
+                released_after = datetime.fromtimestamp(
+                    time.time() - self.config.recent_release_seconds, tz=timezone.utc
+                ).astimezone()
+                logger.info("pick release data after {}", released_after.replace(microsecond=0))
 
             rss_items: list[tuple[str, str, str, datetime, int, str, str, str]] = conn.fetch_all(
                 """

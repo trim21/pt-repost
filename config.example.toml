@@ -27,8 +27,9 @@ includes = [
 
 ]
 
-# recent-release-seconds = 14400
 # 跳过 1h 之前发布的种子
+# 支持的格式参照 https://pkg.go.dev/time#example-ParseDuration
+# 删除此项则禁用按照发布时间筛选种子。
 recent-release = '1h'
 
 excludes = [
