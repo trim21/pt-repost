@@ -1,3 +1,4 @@
+# 多节点部属时每个node需要使用不同的值
 node-id = 'dev-node-1'
 
 http_proxy = "http://127.0.0.1:1080"
