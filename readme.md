@@ -21,17 +21,18 @@ services:
     volumes:
       - ./data/pg:/var/lib/postgresql/data
   pt-repost-daemon:
-    image: 'ghcr.io/trim21/pt-repost:daemon'
+    image: "ghcr.io/trim21/pt-repost:daemon"
     networks: [pt-repost]
     command:
       - daemon
       - --config-file=/etc/pt-repost/config.toml
-    # 必需要把qb的下载路径mount进去
     volumes:
+      # 必需要把qb的下载路径原样mount进去以
+      # 否则会出现找不到文件的错误
       - /srv/:/srv/
       - ./config.toml:/etc/pt-repost/config.toml
   pt-repost-ui:
-    image: 'ghcr.io/trim21/pt-repost:daemon'
+    image: "ghcr.io/trim21/pt-repost:daemon"
     networks: [pt-repost]
     command:
       - server
@@ -39,10 +40,9 @@ services:
       - --port=8080
       - --host=0.0.0.0
     ports:
-      - '8080:8080'
+      - "8080:8080"
     volumes:
       - ./config.toml:/etc/pt-repost/config.toml
 ```
-
 
 daemon 可以在多节点上运行，需要使用 tailscale 等工具组网。
