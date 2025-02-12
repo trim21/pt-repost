@@ -72,7 +72,7 @@ from pt_repost.utils import (
     parse_json_as,
     parse_obj_as,
 )
-from pt_repost.website import SSD
+from pt_repost.website import SSD, pattern_any_hdr10, pattern_ssd_jpg_whitelist
 
 
 def format_exc(e: Exception) -> str:
@@ -323,6 +323,8 @@ class Application:
             ),
         )
 
+        info = parse_json_as(FullSubjectInfo, meta_info)
+
         images = [
             t[0] for t in self.db.fetch_all("select url from image where info_hash = $1", [t.hash])
         ]
@@ -334,9 +336,11 @@ class Application:
                 image_format = "png"
                 if (
                     pattern_web_dl.search(title)
-                    and pattern_dovi.search(title)
+                    and (pattern_any_hdr10.search(title) or pattern_dovi.search(title))
                     and pattern_2160p.search(title)
                 ):
+                    image_format = "jpg"
+                elif "CN" in info.origin_country and pattern_ssd_jpg_whitelist.search(title):
                     image_format = "jpg"
 
                 image_files = list(
@@ -385,8 +389,6 @@ class Application:
         tc = self.export_torrent(t.hash)
 
         logger.info("create post")
-
-        info = parse_json_as(FullSubjectInfo, meta_info)
 
         # clean old torrent tracker info
         torrent_data = bencode2.bdecode(tc)

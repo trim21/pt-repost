@@ -14,9 +14,11 @@ from pt_repost.tmdb import FullSubjectInfo
 from pt_repost.utils import dedupe
 
 pattern_dovi = re.compile(r"\bDolby Vision\b", re.IGNORECASE)
+pattern_any_hdr10 = re.compile(r"\bHDR10.*\b", re.IGNORECASE)
 pattern_hdr10 = re.compile(r"\bHDR10\b", re.IGNORECASE)
 pattern_hdr10_plus = re.compile(r"\bHDR10\+\b", re.IGNORECASE)
 pattern_hdr10_vivid = re.compile(r"\bHDR Vivid\b", re.IGNORECASE)
+pattern_ssd_jpg_whitelist = re.compile(r"-(CMCTV|HHWEB|PTerWEB|CatEDU|OurTV)$", re.IGNORECASE)
 
 
 class Website(abc.ABC):

@@ -85,8 +85,8 @@ def get_video_duration(video_file: Path) -> int:
     return int(json.loads(probe["format"]["duration"]))
 
 
-# 15mb
-IMAGE_SIZE_LIMIT = 15 * 1024 * 1024
+# 20mb
+IMAGE_SIZE_LIMIT = 20 * 1024 * 1024
 
 
 oxipng_executable = which("oxipng")
