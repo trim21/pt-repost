@@ -1,8 +1,8 @@
-FROM rust:1-bullseye@sha256:1e3f7a9fd1f278cc4be02a830745f40fe4b22f0114b2464a452c50273cc1020d AS rust-build
+FROM rust:1-bullseye@sha256:1e3f7a9fd1f278cc4be02a830745f40fe4b22f0114b2464a452c50273cc1020d AS oxipng
 
 RUN cargo install oxipng
 
-FROM ghcr.io/astral-sh/uv:python3.10-bookworm AS build
+FROM ghcr.io/astral-sh/uv:python3.10-bookworm AS uv
 
 WORKDIR /app
 
@@ -22,11 +22,11 @@ ENTRYPOINT ["python", "main.py"]
 RUN apt-get update && apt-get install -y ffmpeg mediainfo &&\
     rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
 
-COPY --from=rust-build /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
+COPY --from=oxipng /usr/local/cargo/bin/oxipng /usr/local/bin/oxipng
 # check oxipng is working
 RUN oxipng --version
 
-COPY --from=build /app/requirements.txt .
+COPY --from=uv /app/requirements.txt .
 
 RUN pip install --only-binary=:all: --no-cache -r requirements.txt
 
