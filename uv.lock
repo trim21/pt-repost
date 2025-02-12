@@ -584,7 +584,7 @@ wheels = [
 [[package]]
 name = "pt-repost"
 version = "0"
-source = { editable = "." }
+source = { virtual = "." }
 dependencies = [
     { name = "asyncpg" },
     { name = "bencode2" },
