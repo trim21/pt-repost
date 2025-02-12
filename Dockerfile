@@ -2,7 +2,7 @@ FROM rust:1-bullseye@sha256:1e3f7a9fd1f278cc4be02a830745f40fe4b22f0114b2464a452c
 
 RUN cargo install oxipng
 
-FROM ghcr.io/astral-sh/uv:python3.10-bookworm AS uv
+FROM ghcr.io/astral-sh/uv:python3.10-bookworm@sha256:29563e25e5485bf479ef2922b1bfe3d62d24da6c84ae834b6dadf44e2ce1137e AS uv
 
 WORKDIR /app
 
