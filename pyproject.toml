@@ -39,8 +39,8 @@ dev = [
     'mypy',
 ]
 
-[project.scripts]
-pt-repost = 'pt_repost.main:main'
+[tool.uv]
+package = false
 
 [tool.pytest.ini_options]
 cache_dir = '.venv/.cache/pytest'
