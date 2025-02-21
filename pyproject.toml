@@ -8,7 +8,7 @@ dependencies = [
     'uuid-utils==0.10.0',
     'rich==13.9.4',
     'xxhash==3.5.0',
-    'qbittorrent-api==2024.12.71',
+    'qbittorrent-api==2025.2.0',
     'click==8.1.8',
     'sslog==0.0.0a52',
     'pydantic==2.10.6',
