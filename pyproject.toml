@@ -13,7 +13,7 @@ dependencies = [
     'sslog==0.0.0a52',
     'pydantic==2.10.6',
     'httpx==0.28.1',
-    'bencode2==0.3.21',
+    'bencode2==0.3.24',
     'tomli==2.2.1',
     'yarl==1.18.3',
     'guessit==3.8.0',

@@ -70,18 +70,18 @@ wheels = [
 
 [[package]]
 name = "bencode2"
-version = "0.3.21"
+version = "0.3.24"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/01/147abbcd4cea92c9a83aefa42cd5132f03e296780520bdb1b6e213a71fa1/bencode2-0.3.21-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:4cd89de770f5b177342917521404c146cb0f11b40cb815f4bc09aca17784fa26", size = 125765 },
-    { url = "https://files.pythonhosted.org/packages/fd/fc/0ed009232a649f1725cd378bf94e568005ee965963abc6e6b3744e3909c1/bencode2-0.3.21-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:7cbbb5c9c18702950130a6f0d12b63f9855625274c41aa3f02313afbd7ce0f22", size = 138209 },
-    { url = "https://files.pythonhosted.org/packages/be/b9/bb9c4c2010456dd45cc3b099fb2dcb2a6884cb0e72d36142e17d35e302a8/bencode2-0.3.21-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:06c8ba77c642a9a12d7802ed0798bfba9ce76b3d122f12cd0aee322374aaeeb9", size = 169566 },
-    { url = "https://files.pythonhosted.org/packages/d5/39/607afb6dfdd7e2ca37cdfa8e45ba150ea950fb20d0059249acb1a377da23/bencode2-0.3.21-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f2faef3d02740a0712ac1ed25d1d9cd69ed2c16c43ccc0cea8b3c8f4bc049d0b", size = 177016 },
-    { url = "https://files.pythonhosted.org/packages/9e/42/5a19a20460619704ca7816ec29cdf67574ca67f6cc6de9121bd8a01439b7/bencode2-0.3.21-cp310-cp310-win_amd64.whl", hash = "sha256:827f44abe872ebe23529b6a6b91d1a9c4f29abdc736e3eb004e2f8273073fb3a", size = 99416 },
-    { url = "https://files.pythonhosted.org/packages/08/4d/992038f3f0ccbe6c4aecc1c4e314864df7741ea7bea614badb848f6d07a1/bencode2-0.3.21-py3-none-any.whl", hash = "sha256:95f4d79491e13677cc98a7dfca9aefa2835b83a2d3ce9d285d53a0a52fdaded0", size = 6566 },
+    { url = "https://files.pythonhosted.org/packages/91/17/8d2e43b0a2f37af193bf8e79fda9dd4f3c3945e897c1bcf5ab94286850fd/bencode2-0.3.24-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:ca995acbc38893b58d688a0b6275b0122277211294799ecf632ae12f0b49dae2", size = 122174 },
+    { url = "https://files.pythonhosted.org/packages/5b/1b/fe9771e7f7feece5583e15cc68663649a96d3e5381617cadfc4a9e16e23a/bencode2-0.3.24-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:8a2f349fa26d0c884868a72dee49c9ee0da5b662ef738a8e934ab5cba4996e9e", size = 137097 },
+    { url = "https://files.pythonhosted.org/packages/66/83/d6daad2f970dc1151ac0d57ada5f189e2223baae641312253bc96c91dfff/bencode2-0.3.24-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:88cd42d5515e408fde271f0c18e0f5992bc4a5dd1321b1e22102afd11be7623b", size = 162841 },
+    { url = "https://files.pythonhosted.org/packages/d9/ba/6b5894273d9c30d4f9b1a8af4349e23096a927862a8c4c9c71788832c73f/bencode2-0.3.24-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b63bfb002a86c52de314e7148a7e02accee53f3f2ab6bf2d33e0ce92049a4eb1", size = 170966 },
+    { url = "https://files.pythonhosted.org/packages/39/8b/6418e2313096f968744432d396d7d18afb6ba339d03ebab7ca37b4d42628/bencode2-0.3.24-cp310-cp310-win_amd64.whl", hash = "sha256:bba1021ecea2a8e086aaa953c9c7805e5c18eac846b12cd9cf0a9086b2f4ad17", size = 92856 },
+    { url = "https://files.pythonhosted.org/packages/3e/79/792434fccc8d5cb3646d460fd9c50020bcebdfc26f9ad9b9a6fba0acbe5d/bencode2-0.3.24-py3-none-any.whl", hash = "sha256:aa476e57aecd3b3ffde1ca17954fd587d25b582557145e7a98491732d3ece566", size = 14514 },
 ]
 
 [[package]]
@@ -625,7 +625,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "asyncpg", specifier = "==0.30.0" },
-    { name = "bencode2", specifier = "==0.3.21" },
+    { name = "bencode2", specifier = "==0.3.24" },
     { name = "click", specifier = "==8.1.8" },
     { name = "durationpy", specifier = "==0.9" },
     { name = "fastapi", specifier = "==0.115.8" },
