@@ -1,4 +1,4 @@
-FROM rust:1-bullseye@sha256:d67c1c879418037577d2b7cc6ae9d128453185c308de42517fd5d3644c7f5e04 AS oxipng
+FROM rust:1-bullseye@sha256:5259f637d80284aa42a4102dc65d5bd2bf94c711973b75d78ac08e82a3563527 AS oxipng
 
 RUN cargo install oxipng
 
