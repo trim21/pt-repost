@@ -655,7 +655,7 @@ dev = [
     { name = "mypy" },
     { name = "types-pyyaml", specifier = "==6.0.12.20250402" },
     { name = "types-regex", specifier = "==2024.11.6.20250403" },
-    { name = "types-six", specifier = "==1.17.0.20241205" },
+    { name = "types-six", specifier = "==1.17.0.20250403" },
 ]
 
 [[package]]
@@ -987,11 +987,11 @@ wheels = [
 
 [[package]]
 name = "types-six"
-version = "1.17.0.20241205"
+version = "1.17.0.20250403"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ca/01/1e1088033a79faa46d1b0761b5b00f2d50e5f89c567a140d55b79d1f2658/types_six-1.17.0.20241205.tar.gz", hash = "sha256:1f662347a8f3b2bf30517d629d82f591420df29811794b0bf3804e14d716f6e0", size = 15460 }
+sdist = { url = "https://files.pythonhosted.org/packages/81/78/a711162eca091781522be07bf10694f2b731bbdbb885ec037a807e7658c5/types_six-1.17.0.20250403.tar.gz", hash = "sha256:82076f86e6e672a95adbf8b52625b1b3c72a8b9a893180344c1a02a6daabead6", size = 15521 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/96/c6/67812fcc6c4d6cb469a7f38a293ad6d6effcfb4b599eb0f1ba287878ec0f/types_six-1.17.0.20241205-py3-none-any.whl", hash = "sha256:a4947c2bdcd9ab69d44466a533a15839ff48ddc27223615cb8145d73ab805bc2", size = 20068 },
+    { url = "https://files.pythonhosted.org/packages/a6/d1/14a6a959a3f53105034ebe346a1f3c375296637292780f6e952fcf634974/types_six-1.17.0.20250403-py3-none-any.whl", hash = "sha256:0bbb20fc34a18163afe7cac70b85864bd6937e6d73413c5b8f424def28760ae8", size = 19951 },
 ]
 
 [[package]]
