@@ -10,7 +10,7 @@ COPY uv.lock pyproject.toml ./
 
 RUN uv export --no-group dev --locked --no-build --no-emit-project > /app/requirements.txt
 
-FROM python:3.10-slim@sha256:f680fc3f447366d9be2ae53dc7a6447fe9b33311af209225783932704f0cb4e7
+FROM python:3.10-slim@sha256:06f6d69d229bb55fab83dded514e54eede977e33e92d855ba3f97ce0e3234abc
 
 WORKDIR /app
 ENV PIP_ROOT_USER_ACTION=ignore \
