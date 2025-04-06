@@ -33,7 +33,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    'types-regex==2024.11.6.20241221',
+    'types-regex==2024.11.6.20250403',
     'types-six==1.17.0.20241205',
     'types-PyYAML==6.0.12.20250402',
     'mypy',
