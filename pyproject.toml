@@ -15,7 +15,7 @@ dependencies = [
     'httpx==0.28.1',
     'bencode2==0.3.24',
     'tomli==2.2.1',
-    'yarl==1.18.3',
+    'yarl==1.19.0',
     'guessit==3.8.0',
     'six==1.17.0',
     'psycopg[binary,pool]==3.2.5',
