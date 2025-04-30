@@ -1,7 +1,7 @@
 [project]
 name = 'pt-repost'
 version = '0'
-requires-python = '~=3.10.0'
+requires-python = '==3.10.17'
 description = ''
 dependencies = [
     'orjson==3.10.16',
