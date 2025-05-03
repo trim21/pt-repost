@@ -11,7 +11,7 @@ dependencies = [
     'qbittorrent-api==2025.2.0',
     'click==8.1.8',
     'sslog==0.0.0a52',
-    'pydantic==2.11.2',
+    'pydantic==2.11.4',
     'httpx==0.28.1',
     'bencode2==0.3.26',
     'tomli==2.2.1',
