@@ -35,7 +35,7 @@ dependencies = [
 dev = [
     'types-regex==2024.11.6.20250403',
     'types-six==1.17.0.20250403',
-    'types-PyYAML==6.0.12.20250402',
+    'types-PyYAML==6.0.12.20250516',
     'mypy',
 ]
 
